@@ -1,0 +1,34 @@
+/* NavBar.css */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4CAF50; 
+    color: black;
+    padding: 0px 0px; 
+    width: 100%; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: 1000; 
+}
+
+.logo {
+    display: flex;
+    margin-left: 5px;
+    font-size: 0.4rem; 
+}
+
+.logo img {
+    height: 35px; 
+}
+
+.yolofarm {
+    margin-right: 1040px;
+}
+
+.email {
+    font-size: 0.7rem; 
+    margin-right: 30px;
+}

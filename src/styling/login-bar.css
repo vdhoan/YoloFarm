@@ -1,0 +1,47 @@
+.login-bar {
+    background: #F5F7FA; 
+    border-radius: 25px;
+    padding: 15px 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 360px; 
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-bar h2 {
+    color: #0F9F3F;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.login-bar input {
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 340px; 
+}
+
+.login-bar .forgot-password {
+    color: #0F9F3F;
+    font-size: 0.6rem;
+    text-align: left;
+    margin-top: -15px;
+    margin-bottom: 20px;
+}
+
+.login-bar button {
+    background-color: #0F9F3F; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+}
+
+.login-bar button:hover {
+    background-color: #237c27; 
+}
