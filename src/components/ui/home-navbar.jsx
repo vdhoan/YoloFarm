@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg'; // Adjust the path according to your project structure
-import '../styling/home-navbar.css'; // Ensure this path is correct as well
+import logo from '../../assets/logo.svg'; 
+import '../../assets/home-navbar.css'; 
 
 const HomeNavBar = () => {
     return (
