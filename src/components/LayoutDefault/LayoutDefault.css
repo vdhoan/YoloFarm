@@ -1,5 +1,5 @@
 .layout{
-height: 100vh;
+    height: 100vh;
 }
 
 .header{
@@ -7,7 +7,7 @@ height: 100vh;
 }
 .sublayout{
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 .ant-layout-sider{
     background-color: #fff;
@@ -16,40 +16,21 @@ height: 100vh;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
 }
-.content-footer{
-    margin-left: calc(15vw + 10px);
-}
+
 .content{
-    /* padding: 20px; */
     background-color: #f0f2f5;
-    height: 94%;
+    /* height: 93.5%; */
     width: 85vw;
     display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.footer{
-    background-color: #f0f2f5;
-    /* padding: 20px; */
-    text-align: center;
-    /* margin-top: 20px; */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    display: block;
-    height: 5%;
-    color: #000;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    width: 84.5%;
-    /* margin-left: calc(15vw + 10px); */
 
-}
-.sider{
-  position: fixed; 
-}
 .ant-layout {
     width: 100% !important;
-  }
+}
 
-  
 main {
     width: 99%; 
 }

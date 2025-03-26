@@ -1,0 +1,46 @@
+.watering{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: #b69d9d solid 1px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.watering-form{
+    padding: 15px 30px;
+    gap: 10px;
+    width: 100%;
+}
+.watering-titile{
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 4vh;
+    text-align: center;
+}
+.watering-titile hr{
+    border: 1px solid #0d0d0d; 
+    width: 85%; 
+     margin: 1vh auto;  
+}
+
+.date{
+    display: flex;
+    justify-content: space-between;
+}
+.time{
+    display: flex;
+    justify-content: space-between;
+}
+.submit-watering{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10vw; 
+    /* width: 80%; */
+    /* margin-left: 20%; */
+}

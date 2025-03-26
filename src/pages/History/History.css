@@ -1,0 +1,31 @@
+.history{
+    margin :0vh 2vw;
+    height: 85vh;
+}
+
+.filter-history{
+   margin-bottom: 3vh;
+    display: flex;
+    justify-content: right;
+    top: 5vh;
+}
+
+.table-history{
+    height: 70vh;
+}
+.table-history h2{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 4vh;
+    text-align: center;
+    margin-top: 3vh;    
+}
+
+.pagination-history{
+    justify-content: center;
+    position: absolute;
+    bottom: 8vh;
+    left: 45%;
+   /*  margin-top: 3vh; */
+}
