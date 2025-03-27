@@ -4,7 +4,8 @@
 }
 
 .filter-history{
-   margin-bottom: 3vh;
+    margin-top: 3vh;
+   margin-bottom: 5vh;
     display: flex;
     justify-content: right;
     top: 5vh;

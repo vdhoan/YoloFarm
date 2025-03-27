@@ -31,15 +31,17 @@
     padding-top: 5px;
     margin-left: 0.8vw;
 }
+.home{
+    margin-top: 3px;
+    height: 89vh;
+    width: 87vw;
+}
 
 .home-page {
-    width: 99.5%;
-    height: 99%;
-    object-fit: cover;
+    width: 97%;  
+    height: 100%; 
+    object-fit: cover; 
     border-radius: 10px;
-    margin-top: 8px;
-    margin-right: 2px;
-    margin-bottom: 7px;
 }
 .email {
     font-size: 0.7rem; 

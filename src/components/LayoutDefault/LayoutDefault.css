@@ -1,6 +1,6 @@
-.layout{
+/* .layout{
     height: 100vh;
-}
+} */
 
 .header{
     height: 10vh;
@@ -11,8 +11,8 @@
 }
 .ant-layout-sider{
     background-color: #fff;
-    width: 15vw;
-    height: 100%;
+    /* width: 15vw; */
+    /* height: 100%; */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
 }
@@ -22,16 +22,17 @@
     /* height: 93.5%; */
     width: 85vw;
     display: block;
-    display: flex;
+    min-height: 90vh;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 
-.ant-layout {
+/* .ant-layout {
     width: 100% !important;
 }
 
 main {
     width: 99%; 
-}
+} */
 

@@ -1,7 +1,8 @@
 // import { NavLink } from "react-router-dom";
 import { Form, Button, Input } from "antd";
 import "./AutomaticWatering.css";
-import { TimePicker,DatePicker,Checkbox } from "antd";
+import { TimePicker,DatePicker,Checkbox} from "antd";
+import { useState } from "react";
 // import dayjs from "dayjs";
 // import { notification } from "antd";
 
@@ -24,6 +25,11 @@ export default function AutomaticWatering() {
         //     })
         // }
     }
+    const [checked, setChecked] = useState(false);
+    const onChangeActive = (e) => {
+        setChecked(e.target.checked);
+        console.log("Checkbox checked:", e.target.checked);
+    };
      return (
         <div className="watering">
             <div className="watering-form">
@@ -70,7 +76,7 @@ export default function AutomaticWatering() {
                     <Form.Item
                         name="active"
                     >
-                        <Checkbox onChange={onChange}>Lặp lại</Checkbox>
+                        <Checkbox checked={checked} onChange={onChangeActive}>Lặp lại</Checkbox>
                     </Form.Item>
 
                     
