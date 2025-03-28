@@ -18,14 +18,8 @@ export default function Thresholds() {
 
     useEffect(() => {
         const fetchThresholds = async () => {
-            try {
                 const response = await getThresholds();
-                setThresholds(response);
-                // console.log(response)
-               
-            } catch (error) {
-                console.error('Lỗi khi lấy dữ liệu:', error);
-            }
+                setThresholds(response);    
         };
 
         fetchThresholds();
@@ -60,9 +54,9 @@ export default function Thresholds() {
     };
 
 
-    const onChange = (value) => {
-        console.log(`selected ${value}`);
-    };
+    // const onChange = (value) => {
+    //     console.log(`selected ${value}`);
+    // };
     const handleDelete = async (thresholdId) => {
         try{
             await deleteThresholds(thresholdId)
@@ -147,7 +141,7 @@ export default function Thresholds() {
                         <hr />
                     </div>
 
-                    <Form  form={form}layout='vertical' size='large' onFinish={handleSubmitForm} >
+                   <Form  form={form}layout='vertical' size='large' onFinish={handleSubmitForm} >
 
                         <Form.Item
                             label="Loại xét ngưỡng"
@@ -156,7 +150,7 @@ export default function Thresholds() {
                         >
                             <Select
                                 placeholder="Chọn loại xét ngưỡng"
-                                onChange={onChange}
+                                // onChange={onChange}
                                 options={[
                                     {
                                         value: 'temperature',

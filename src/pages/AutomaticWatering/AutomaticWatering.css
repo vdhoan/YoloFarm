@@ -1,9 +1,26 @@
+.all-watering{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2%;
+}
+.history-watering{
+    width: 60%;
+    margin-top: 2vh;
+}
+.filter-watering{
+    margin-bottom: 2vh;
+}
+.table-watering h2{
+    margin-bottom: 2vh;
+    text-align: center;
+}
 .watering{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 45%;
-    padding: 20px;
+    width: 33%;
+   
     background-color: #fff;
     border-radius: 10px;
     border: #b69d9d solid 1px;
@@ -11,7 +28,7 @@
 }
 
 .watering-form{
-    padding: 15px 30px;
+    padding: 19px 30px;
     gap: 10px;
     width: 100%;
 }

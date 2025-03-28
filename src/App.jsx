@@ -10,6 +10,7 @@ import Statistics from './pages/Statistics/Statistics'
 import History from './pages/History/History'
 import Thresholds from './pages/Thresholds/Thresholds'
 import User from './pages/User/User'
+import Warning from './pages/Warning/Warning'
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                     <Route path="history" element={<History />} />
                     <Route path="thresholds" element={<Thresholds />} />
                     <Route path="user" element={<User />} />
+                    <Route path="warning" element={<Warning />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
