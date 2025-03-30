@@ -1,5 +1,6 @@
-import Thresholds from "../pages/Thresholds/Thresholds";
+// import Thresholds from "../pages/Thresholds/Thresholds";
 import instance from "./AxiosCustomize";
+import axios from "axios";
 
 export const getThresholds = async () => {
     const response = await instance.get("/api/thresholds"); 
@@ -39,5 +40,20 @@ export const getWarning = async ()=>{
 
 export const postWarning = async (formData)=>{
     const response = await instance.post("/api/warnings",formData)
+    return response
+}
+
+export const getTemperature = async ()=>{
+    const response = await axios.get("https://io.adafruit.com/api/v2/NgoKhang/feeds/nhiet-do/data")
+    return response
+}
+
+export const getHumidity = async () =>{
+    const response = await axios.get("https://io.adafruit.com/api/v2/NgoKhang/feeds/do-am/data")
+    return response
+}
+
+export const getSoilMoisture = async()=>{
+    const response = await axios.get("https://io.adafruit.com/api/v2/NgoKhang/feeds/do-am-dat/data")
     return response
 }
