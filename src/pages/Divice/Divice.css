@@ -1,0 +1,53 @@
+
+.device-container {
+    width: 100%;
+}
+
+.device-title {
+    text-align: center;
+    padding: 10px;
+    margin: 40px;
+    color: black;
+    font-weight: bold;
+    font-size: 2.25rem; 
+}
+
+.device-table {
+    width: 96%;
+    margin: 1.5rem;
+    border-collapse: collapse;
+}
+
+.device-table thead {
+    background-color: #f9fafb;
+    border-bottom: 2px solid #e5e7eb; 
+}
+.device-table tbody {
+   background-color: #fff;
+}
+
+.device-table th {
+    padding: 0.75rem;
+    text-align: center;
+    font-size: 1.125rem; 
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
+.device-table td {
+    padding: 0.75rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #374151; 
+    border-bottom: 1px solid #d1d5db; 
+}
+
+.device-table tr:hover {
+    background-color: #eef0f2; 
+}
+
+.edit-icon {
+    cursor: pointer;
+    color: blue;
+}

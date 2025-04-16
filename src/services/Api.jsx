@@ -78,6 +78,7 @@ export const controlPump = async(status)=>{
         );
 
         console.log("Response:", response);
+        return response
     } catch (error) {
         console.error("Error:", error.response ? error.response.data : error.message);
     }

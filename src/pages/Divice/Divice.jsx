@@ -1,10 +1,11 @@
-import {EditOutlined } from  "@ant-design/icons"
+import { EditOutlined } from "@ant-design/icons";
+import "./Divice.css";
 
 export default function Divice() {
     return (
-        <>
-            <h1 className="text-center block p-[10] m-lg">Danh sách thiết bị</h1>
-            <table>
+        <div className="device-container">
+            <h1 className="device-title">Danh sách thiết bị</h1>
+            <table className="device-table">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -21,10 +22,10 @@ export default function Divice() {
                         <td>1</td>
                         <td>YB001</td>
                         <td>Yolo:bit</td>
-                        <td>Trung tâm điều kiển</td>
+                        <td>Trung tâm điều khiển</td>
                         <td>Tủ điện</td>
                         <td>Hoạt động</td>
-                        <td><EditOutlined /></td>
+                        <td><EditOutlined className="edit-icon" /></td>
                     </tr>
                     <tr>
                         <td>2</td>
@@ -33,7 +34,7 @@ export default function Divice() {
                         <td>Đo độ ẩm đất</td>
                         <td>Khu vườn</td>
                         <td>Hoạt động</td>
-                        <td><EditOutlined /></td>
+                        <td><EditOutlined className="edit-icon" /></td>
                     </tr>
                     <tr>
                         <td>3</td>
@@ -42,7 +43,7 @@ export default function Divice() {
                         <td>Đo độ ẩm không khí</td>
                         <td>Khu vườn</td>
                         <td>Hoạt động</td>
-                        <td><EditOutlined /></td>
+                        <td><EditOutlined className="edit-icon" /></td>
                     </tr>
                     <tr>
                         <td>4</td>
@@ -51,10 +52,10 @@ export default function Divice() {
                         <td>Tưới cây</td>
                         <td>Khu vườn</td>
                         <td>Hoạt động</td>
-                        <td><EditOutlined /></td>
+                        <td><EditOutlined className="edit-icon" /></td>
                     </tr>
                 </tbody>
             </table>
-        </>
+        </div>
     );
 }
