@@ -1,0 +1,53 @@
+.pump{
+    display: flex;
+    justify-content: center;
+    gap: 9%;
+    margin-top: 8vh ;
+}
+.pump-control, .pump-schedule{
+    border: 1px solid #584747;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: #544f4f 0px 0px 5px 0px;
+}
+.pump-button, .pump-schedule-button{
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+    margin-bottom: 20px;
+}
+
+.button {
+   
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.on-pump{
+    background-color: #4CAF50;
+    color: white;
+}
+.off-pump{
+    background-color: #f44336;
+    color: white;
+}
+.off-pump:hover{
+    background-color: #ef6f66;
+}
+
+.link-watering{
+    background-color: #36add1;
+    color: white;
+}
+
+.link-watering:hover{
+    background-color: #4bb5d5;
+}
+
+.button a{
+    color: #fff;
+}

@@ -1,0 +1,38 @@
+/* .layout{
+    height: 100vh;
+} */
+
+.header{
+    height: 10vh;
+}
+.sublayout{
+    display: flex;
+    gap: 5px;
+}
+.ant-layout-sider{
+    background-color: #fff;
+    /* width: 15vw; */
+    /* height: 100%; */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.content{
+    background-color: #f0f2f5;
+    /* height: 93.5%; */
+    width: 85vw;
+    display: block;
+    min-height: 90vh;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+/* .ant-layout {
+    width: 100% !important;
+}
+
+main {
+    width: 99%; 
+} */
+

@@ -1,18 +1,50 @@
+.wrapper {
+    background-image: url('../../assets/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logo-login {
+    height: 3rem;
+    width: 3rem;
+    margin-left: 2vw;
+
+}
+.name{
+    font-size: 1.5rem;
+    margin-left: 1vw;
+    padding-top: 8px;
+}
 .login-bar {
     background: #F5F7FA; 
     border-radius: 25px;
-    padding: 15px 40px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 360px; 
-    margin: auto;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 32vw; 
+    margin: auto;
     flex-direction: column;
+   
 }
 
 .login-bar h2 {
     color: #0F9F3F;
-    text-align: left;
+    text-align: center;
+    margin-top: 20px;
     margin-bottom: 20px;
+}
+.login-bar form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* width: 100%; */
+    padding: 20px;
 }
 
 .login-bar input {
@@ -20,7 +52,7 @@
     border: 2px solid #ccc;
     border-radius: 8px;
     margin-bottom: 20px;
-    width: 340px; 
+    width: 25vw; 
 }
 
 .login-bar .forgot-password {
