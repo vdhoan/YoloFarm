@@ -57,3 +57,29 @@ export const getSoilMoisture = async()=>{
     const response = await axios.get("https://io.adafruit.com/api/v2/NgoKhang/feeds/do-am-dat/data")
     return response
 }
+
+export const getStatusPump = async()=>{
+    const response = await axios.get("https://io.adafruit.com/api/v2/NgoKhang/feeds/pump/data")
+    return response
+}
+const API_KEY = import.meta.env.VITE_ADAFRUIT_IO_KEY;
+export const controlPump = async(status)=>{
+  
+    try {
+        const response = await axios.post(
+            "https://io.adafruit.com/api/v2/NgoKhang/feeds/pump/data",
+            { value: status },
+            {
+                headers: {
+                    "X-AIO-Key": API_KEY,
+                    "Content-Type": "application/json",
+                }
+            }
+        );
+
+        console.log("Response:", response);
+    } catch (error) {
+        console.error("Error:", error.response ? error.response.data : error.message);
+    }
+};
+
