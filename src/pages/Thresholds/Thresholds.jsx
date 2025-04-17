@@ -8,6 +8,7 @@ import { deleteThresholds, getThresholds, postThresholds } from '../../services/
 import { useForm } from "antd/es/form/Form";
 
 export default function Thresholds() {
+    const token = localStorage.getItem("token")
     const [form] = useForm();
     const [thresholds, setThresholds] = useState({
         temperature: { minValue: 0, maxValue: 0 },
@@ -17,8 +18,9 @@ export default function Thresholds() {
     const [changeData, setChangeData] = useState(false)
 
     useEffect(() => {
+       
         const fetchThresholds = async () => {
-                const response = await getThresholds();
+                const response = await getThresholds(token);
                 setThresholds(response);    
         };
 
@@ -35,7 +37,7 @@ export default function Thresholds() {
         };
 
         try {
-            await postThresholds(formattedValues);
+            await postThresholds(token,formattedValues);
 
             setChangeData(!changeData);
             notification.success({
@@ -59,7 +61,7 @@ export default function Thresholds() {
     // };
     const handleDelete = async (thresholdId) => {
         try{
-            await deleteThresholds(thresholdId)
+            await deleteThresholds(token,thresholdId)
             setChangeData(!changeData);
             notification.success({
                 message: "Thành công",

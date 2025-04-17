@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Grid,
@@ -11,19 +11,17 @@ import {
 import "./User.css"
 import EditIcon from "@mui/icons-material/Edit";
 import LockResetIcon from "@mui/icons-material/LockReset";
+import { UserContext } from "../../components/Context/userContext";
 
 export default function UserProfileCard() {
-  const [userData, setUserData] = useState({
-    firstName: "QUYNH",
-    lastName: "DANG THI",
-    email: "dangthiquynh@gmail.com",
-    username: "Trường Đại học Bách khoa - ĐHQG TP.HCM, VRJ4+65C, Đông Hoà, Dĩ An, Bình Dương",
-  });
+  const {userData} = useContext(UserContext)
+  console.log("layour ",userData)
+  // const [profile, setProfile] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData(prev => ({ ...prev, [name]: value }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setUserData(prev => ({ ...prev, [name]: value }));
+  // };
 
   return (
     <Paper
@@ -45,7 +43,7 @@ export default function UserProfileCard() {
       <Box textAlign="center" mb={3}>
         <Avatar sx={{ width: 80, height: 80, mx: "auto" }} />
         <Typography mt={1} fontWeight="bold">
-          {userData.lastName} {userData.firstName}
+          {userData?.name} 
         </Typography>
 
         <Box mt={1} display="flex" justifyContent="center" gap={2}>
@@ -68,11 +66,12 @@ export default function UserProfileCard() {
         <Grid item xs={6}>
           <div className="lastname-box">
             <TextField
-              label="Họ"
-              name="lastName"
-              value={userData.lastName}
-              onChange={handleChange}
+              label="User Name"
+              name="UserName"
+              value={userData?.username}
+              // onChange={handleChange}
               fullWidth
+              disabled
               variant="filled"
               InputProps={{
                 disableUnderline: true,
@@ -89,10 +88,11 @@ export default function UserProfileCard() {
         <Grid item xs={6}>
           <div className="firstname-box">
             <TextField
-              label="Tên"
-              name="firstName"
-              value={userData.firstName}
-              onChange={handleChange}
+              label="Họ tên"
+              name="Name"
+              value={userData?.name}
+              disabled
+              // onChange={handleChange}
               fullWidth
               variant="filled"
               InputProps={{
@@ -111,10 +111,11 @@ export default function UserProfileCard() {
         <Grid item xs={12}>
           <div className="email-box">
             <TextField
-              label="Email"
-              name="email"
-              value={userData.email}
-              onChange={handleChange}
+              label="ID người dùng"
+              name="id"
+              value={userData?._id}
+              disabled
+              // onChange={handleChange}
               fullWidth
               variant="filled"
               InputProps={{
@@ -134,9 +135,10 @@ export default function UserProfileCard() {
           <div className="username-box">
             <TextField
               label="Địa chỉ"
-              name="username"
-              value={userData.username}
-              onChange={handleChange}
+              name="address"
+              disabled
+              value={"Đường Tạ Quang Bửu, phường Linh Trung, thành phố Thủ Đức, Thành phố Hồ Chí Minh."}
+              // onChange={handleChange}
               fullWidth
               variant="filled"
               InputProps={{

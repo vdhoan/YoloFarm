@@ -64,9 +64,10 @@ export default function AutomaticWatering() {
         })
     }
     useEffect(() => {
+        const token = localStorage.getItem("token")
         const getData = async () => {
 
-            const response = await getWatering();
+            const response = await getWatering(token);
             setData(response.data)
             // console.log(response.data)
         }

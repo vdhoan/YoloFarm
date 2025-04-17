@@ -11,6 +11,7 @@ import { getWarning, postWarning } from "../../services/Api";
 export default function Warning() {
     const [changeData, setChangeData] = useState(false);
     const [data, setData] = useState([])
+    const token = localStorage.getItem("token")
 
 
     const columns = [
@@ -41,7 +42,7 @@ export default function Warning() {
     useEffect(() => {
         const getData = async () => {
 
-            const response = await getWarning();
+            const response = await getWarning(token);
             setData(response.data)
         }
 

@@ -28,11 +28,30 @@
     align-items: center; */
 }
 
-/* .ant-layout {
-    width: 100% !important;
+.profile{
+    display: flex;
+    /* flex-direction: row; */
+    display: inline-flex;     /* để căn giữa icon */
+    align-items: center;
+    justify-content: center;
+    width: 20vw;
+}
+.profile i{
+    font-size: 25px;
+}
+.fa-user{
+    color: rgb(24, 162, 116);
+    background-color: #fff;
+    border-radius: 50%;
+    width: 40px;              
+    height: 40px;
+    display: inline-flex;     
+  align-items: center;
+  justify-content: center;
+}
+.profile h2 {
+    padding: 0 15px;
+    color:#f0f2f5
 }
 
-main {
-    width: 99%; 
-} */
 
