@@ -1,33 +1,135 @@
 import { Line,Area, Column } from '@ant-design/plots';
 import { useEffect, useState } from 'react';
-// import { notification } from 'antd'
 import './Statistics.css';
-import { getHumidity, getSoilMoisture, getTemperature } from '../../services/Api';
-
+import { getHumidity, getSoilMoisture, getTemperature, postWarning, getThresholds } from '../../services/Api';
+import { toast } from 'react-toastify';
 
 export default function Statistics() {
-
+    const token = localStorage.getItem("token")
     const [temperature, setTemperature] = useState([])
     const [humidity, setHumidity] = useState([])
     const [soilMoisture, setSoilMoisture] = useState([])
     const [timeOut, setTimeOut] = useState(false)
+    const [thresholds,setThresholds] = useState(null)
+   
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeOut((prev) => !prev);
+    }, 12000);
 
-    setInterval(() => setTimeOut(!timeOut), 50000);
+    return () => clearInterval(interval);
+  }, []);
 
-    useEffect(() => {
-        const fetchTemperature = async () => {
-            const response = await getTemperature();
-            const res = await getHumidity()
-            const responseSoilMoisture = await getSoilMoisture()
-            // console.log(responseSoilMoisture)
-            // console.log(res)
-            setTemperature(response.data);
-            setHumidity(res.data);
-            setSoilMoisture(responseSoilMoisture.data);
-        };
-
-        fetchTemperature();
-    }, [timeOut])
+useEffect(() => {
+    const fetchData = async () => {
+    
+      try {
+        const thresholdsResponse = await getThresholds(token);
+        const temperatureResponse = await getTemperature();
+        const humidityResponse = await getHumidity();
+        const soilMoistureResponse = await getSoilMoisture();
+  
+        setThresholds(thresholdsResponse);
+        setTemperature(temperatureResponse.data);
+        setHumidity(humidityResponse.data);
+        setSoilMoisture(soilMoistureResponse.data);
+        console.log("threshold",thresholdsResponse)
+        console.log("temperature",temperatureResponse.data)
+        console.log("humidity",humidityResponse.data)
+        console.log("soilMoisture",soilMoistureResponse.data)
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu:", error);
+      } 
+    };
+  
+    fetchData();
+  }, [timeOut, token]);
+  
+  // Effect theo dõi dữ liệu và gọi API cảnh báo nếu cần
+  useEffect(() => {
+    const sendWarnings = async () => {
+      if (
+        temperature?.[0]?.value != null &&
+        humidity?.[0]?.value != null &&
+        soilMoisture?.[0]?.value != null &&
+        thresholds?.temperature != null &&
+        thresholds?.humidity!= null &&
+        thresholds?.soilMoisture != null
+      ) {
+        // Cảnh báo nhiệt độ
+        console.log("vao if")
+        const tempVal = temperature[0].value;
+        const tempMin = thresholds.temperature.minValue;
+        const tempMax = thresholds.temperature.maxValue;
+  
+        if (tempVal > tempMax) {
+          const res = await postWarning(token, {
+            sensorType: "temperature",
+            currentValue: Number(tempVal),
+            message: "Nhiệt độ cao hơn ngưỡng",
+          });
+          toast.error("Nhiệt độ cao hơn ngưỡng")
+          console.log(res);
+        } else if (tempVal < tempMin) {
+          const res = await postWarning(token, {
+            sensorType: "temperature",
+            currentValue: Number(tempVal),
+            message: "Nhiệt độ thấp hơn ngưỡng",
+          });
+          toast.error("Nhiệt độ thấp hơn ngưỡng")
+          console.log(res);
+        }
+  
+        // Cảnh báo độ ẩm
+        const humVal = humidity[0].value;
+        const humMin = thresholds.humidity.minValue;
+        const humMax = thresholds.humidity.maxValue;
+  
+        if (humVal > humMax) {
+          const res = await postWarning(token, {
+            sensorType: "humidity",
+            currentValue: Number(humVal),
+            message: "Độ ẩm không khí cao hơn ngưỡng",
+          });
+          toast.error("Độ ẩm không khí cao hơn ngưỡng")
+          console.log(res);
+        } else if (humVal < humMin) {
+          const res = await postWarning(token, {
+            sensorType: "humidity",
+            currentValue: Number(humVal),
+            message: "Độ ẩm không khí thấp hơn ngưỡng",
+          });
+          toast.error("Độ ẩm không khí thấp hơn ngưỡng")
+          console.log(res);
+        }
+  
+        const soilVal = soilMoisture[0].value;
+        const soilMin = thresholds.soilMoisture.minValue;
+        const soilMax = thresholds.soilMoisture.maxValue;
+  
+        if (soilVal > soilMax) {
+          const res = await postWarning(token, {
+            sensorType: "soilMoisture",
+            currentValue: Number(soilVal),
+            message: "Độ ẩm đất cao hơn ngưỡng",
+          });
+          toast.error("Độ ẩm đất cao hơn ngưỡng")
+          console.log(res);
+        } else if (soilVal < soilMin) {
+          const res = await postWarning(token, {
+            sensorType: "soilMoisture",
+            currentValue: Number(soilVal),
+            message: "Độ ẩm đất thấp hơn ngưỡng",
+          });
+          toast.error("Độ ẩm đất thấp hơn ngưỡng")
+          console.log(res);
+        }
+      }
+    };
+  
+    sendWarnings();
+  }, [temperature, humidity, soilMoisture, thresholds, token]);
+      
     const configTemperature = {
         data: temperature,
         xField: 'created_at',

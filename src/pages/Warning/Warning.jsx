@@ -1,15 +1,15 @@
 import "./Warning.css"
-import { Form, Button, Input} from "antd";
-import {  DatePicker, Select, Table } from "antd";
+import { Form, Button, Input } from "antd";
+import { DatePicker, Select, Table } from "antd";
 import { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
-import { notification } from "antd";
+// import { notification } from "antd";
 import { FilterOutlined } from '@ant-design/icons'
-import { getWarning, postWarning } from "../../services/Api";
+import { getWarning } from "../../services/Api";
 
 export default function Warning() {
-    const [changeData, setChangeData] = useState(false);
+    // const [changeData, setChangeData] = useState(false);
     const [data, setData] = useState([])
     const token = localStorage.getItem("token")
 
@@ -47,35 +47,10 @@ export default function Warning() {
         }
 
         getData();
-    }, [changeData])
-    const handleSubmitForm = async (values) => {
-        console.log(values);
-        const formSunmit = {
-            sensorType: values.sensorType,
-            currentValue: Number(values.currentValue),
-            message: values.message
-        }
-        try {
-            const response = await postWarning(formSunmit)
-            setChangeData(!changeData)
-            console.log("hi", response)
-            notification.success({
-                message: 'Thành công',
-                description: 'Tạo cảnh báo thành công!'
-            })
-        } catch (error) {
-            notification.error({
-                message: "Có lỗi xảy ra",
-                description: error?.response?.data?.error || error.message || "Lỗi không xác định"
-            });
-        }
+    }, [token])
 
-    }
 
-    const formattedData = data.map((item) => ({
-        ...item,
-        key: item.warningId,
-    }));
+   
     return (
         <div className="all-watering">
 
@@ -87,15 +62,25 @@ export default function Warning() {
                 </div>
                 <div className='table-watering'>
                     <h2>LỊCH SỬ CẢNH BÁO</h2>
-                    <Table
+                    {/* <Table
                         columns={columns}
                         dataSource={formattedData}
                         pagination={true}
                         scroll={{ y: 300 }}
+                    /> */}
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                        pagination={{
+                            pageSize: 10,
+                            showSizeChanger: false,
+                        }}
+                        rowKey={(record) => record.id}
+                        className="history-table"
                     />
                 </div>
             </div>
-            <div className="watering">
+            {/* <div className="watering">
                 <div className="watering-form">
                     <div className="watering-titile">
                         <h2 > TẠO CẢNH BÁO </h2>
@@ -167,7 +152,10 @@ export default function Warning() {
                         </Form.Item>
                     </Form>
                 </div>
-            </div>
+            </div> */}
+            {
+
+            }
         </div>
 
     );

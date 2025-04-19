@@ -66,14 +66,22 @@ export const getWarning = async (token)=>{
     return response
 }
 
-export const postWarning = async (token,formData)=>{
-    const response = await instance.post("/api/warnings",formData,{
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    })
-    return response
-}
+// export const postWarning = async (token,formData)=>{
+//     const response = await instance.post("/api/warnings",formData,{
+//         headers:{
+//             Authorization: `Bearer ${token}`
+//         }
+//     })
+//     return response
+// }
+export const postWarning = async (token, formData) => {
+    const response = await instance.post('/api/warnings', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  };
 
 export const getTemperature = async ()=>{
     const response = await adafruit.get("/nhiet-do/data")
@@ -131,7 +139,7 @@ export const profile = (token)=>{
             Authorization: `Bearer ${token}`
         }
     });
-    console.log(response)
+    // console.log(response)
     return response
     
 }

@@ -5,12 +5,16 @@ import App from './App.jsx'
 
 import { BrowserRouter } from 'react-router-dom'
 import { AppProvider } from './components/Context/userContext.jsx'
-
+import { NotificationProvider } from "./components/Context/WarningContext.jsx";
 createRoot(document.getElementById('root')).render(
   <AppProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </NotificationProvider>
+
+
   </AppProvider>
 
 )

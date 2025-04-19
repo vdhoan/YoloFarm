@@ -25,7 +25,7 @@ export default function Thresholds() {
         };
 
         fetchThresholds();
-    }, [changeData])
+    }, [changeData,token])
 
 
     const handleSubmitForm = async (values) => {

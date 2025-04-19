@@ -1,24 +1,31 @@
 
 import { Layout } from "antd";
 import "./LayoutDefault.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import MenuList from "../MenuList/MenuList";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import { useContext, useState } from "react";
 import { UserContext } from "../Context/userContext";
-
+import { NavLink } from "react-router-dom";
 
 const { Content, Footer, Sider } = Layout;
 
 export default function LayoutDefault() {
     const [modal, setModal] = useState(false)
     const {userData }= useContext(UserContext);
+    const [confirmLogout, setConfirmLogout] = useState(false)
+    const navigate = useNavigate()
 
     const isMobile = window.innerWidth <= 768;
     const [menuFold, setMenuFold] = useState(true)
     const handleClick = () => {
         setMenuFold(true)
+    }
+    const handleLockout = () =>{
+        localStorage.removeItem("token")
+        navigate("/login")
+
     }
     return (
 
@@ -46,15 +53,32 @@ export default function LayoutDefault() {
                                     </div>
                                         
                                 ) : (
-                                    <i className="fa-solid fa-angle-down"></i>)
-                                   }
+                                    <i onClick={()=>setModal(!modal)} className="fa-solid fa-angle-down"></i>)}
                                 {modal && (
-                                    <ul>
-                                        <li>Thông tin cá nhân</li>
-                                        <li>Đăng xuất</li>
+                                    <ul className = "modal-logout">
+                                        <NavLink to="/user" >
+                                            <li className="link-myinfor">Thông tin cá nhân</li>
+                                        </NavLink>
+                                       
+                                        <li onClick={()=>setConfirmLogout(true)} className="link-logout">Đăng xuất</li>
+                                        
+                                        
                                     </ul>
                                 )}
-                            </div>
+                                {confirmLogout && (
+                                    <div className="modal-overlay">
+                                        <div className="confirm-logout">
+                                        <p>Bạn có chắc chắn muốn đăng xuất không ?</p>
+                                        <div className = "confirm-logout-btn">
+                                            <button className="yes" onClick={handleLockout}> Có</button>
+                                            <button className="no" onClick = {()=>setConfirmLogout(false)}>Không</button>
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    
+                                )}
+                        </div>
                     </div>
                 </header >
                 <Layout className="sublayout">

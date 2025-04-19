@@ -1,57 +1,163 @@
-/* .layout{
-    height: 100vh;
-} */
+/* Layout tổng */
+.layout {
+    min-height: 100vh;
+}
 
-.header{
+/* Header */
+.header {
     height: 10vh;
 }
-.sublayout{
+
+/* Body */
+.sublayout {
     display: flex;
     gap: 5px;
 }
-.ant-layout-sider{
+
+/* Sidebar */
+.ant-layout-sider {
     background-color: #fff;
-    /* width: 15vw; */
-    /* height: 100%; */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
 }
 
-.content{
+/* Content chính */
+.content {
     background-color: #f0f2f5;
-    /* height: 93.5%; */
     width: 85vw;
-    display: block;
     min-height: 90vh;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
 }
 
-.profile{
-    display: flex;
-    /* flex-direction: row; */
-    display: inline-flex;     /* để căn giữa icon */
+/* Profile */
+.profile {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 20vw;
+    position: relative;
 }
-.profile i{
+
+.profile i {
     font-size: 25px;
 }
-.fa-user{
+
+.fa-user {
     color: rgb(24, 162, 116);
     background-color: #fff;
     border-radius: 50%;
-    width: 40px;              
+    width: 40px;
     height: 40px;
-    display: inline-flex;     
-  align-items: center;
-  justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.fa-solid {
+    color: #fff;
+}
+
 .profile h2 {
     padding: 0 15px;
-    color:#f0f2f5
+    color: #f0f2f5;
 }
 
+/* Dropdown Modal khi click profile */
+.modal-logout {
+    background-color: #d8d7d7;
+    border-radius: 5px;
+    width: 10vw;
+    position: absolute;
+    top: calc(8vh + 3px);
+    right: 20px;
+    text-align: center;
+}
 
+.modal-logout li {
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: large;
+    color: #000;
+}
+
+/* Hover từng mục */
+.link-myinfor:hover {
+    background-color: #42bbddd2;
+    border-radius: 5px;
+}
+
+.link-logout:hover {
+    background-color: #fc2b10d2;
+    border-radius: 5px;
+}
+
+/* Modal overlay cho màn hình */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4); /* nền xám đậm đẹp */
+    backdrop-filter: blur(4px); /* làm mờ background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+/* Modal xác nhận đăng xuất */
+.confirm-logout {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    width: 26vw;
+    min-height: 25vh;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Text trong modal */
+.confirm-logout p {
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+/* Các nút Có / Không */
+.confirm-logout-btn {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.confirm-logout-btn .yes,
+.confirm-logout-btn .no {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Nút Có */
+.confirm-logout-btn .yes {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.confirm-logout-btn .yes:hover {
+    background-color: #45a049;
+}
+
+/* Nút Không */
+.confirm-logout-btn .no {
+    background-color: #f44336;
+    color: white;
+}
+
+.confirm-logout-btn .no:hover {
+    background-color: #e53935;
+}

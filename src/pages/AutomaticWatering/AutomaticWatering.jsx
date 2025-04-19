@@ -13,6 +13,7 @@ import { deleteWatering, getWatering, postWatering } from "../../services/Api";
 export default function AutomaticWatering() {
     const [changeData, setChangeData] = useState(false);
     const [data, setData] = useState([])
+    const token = localStorage.getItem("token")
 
 
     const columns = [
@@ -64,7 +65,7 @@ export default function AutomaticWatering() {
         })
     }
     useEffect(() => {
-        const token = localStorage.getItem("token")
+       
         const getData = async () => {
 
             const response = await getWatering(token);
@@ -87,7 +88,7 @@ export default function AutomaticWatering() {
             endTime: values.endTime.format('HH:mm'),
         }
         try{
-            const response = await postWatering(formSunmit)
+            const response = await postWatering(token, formSunmit)
             setChangeData(!changeData)
             console.log("hi",response)
             notification.success({
@@ -123,7 +124,7 @@ export default function AutomaticWatering() {
                     <Button type='primary'>Tìm kiếm <FilterOutlined /></Button>
                 </div>
                 <div className='table-watering'>
-                    <h2>LỊCH TƯỚI NƯỚC TỰ ĐỘNG</h2>
+                    <h2>LỊCH SỬ TẠO TƯỚI NƯỚC TỰ ĐỘNG</h2>
                     <Table
                         columns={columns}
                         dataSource={formattedData}

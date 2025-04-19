@@ -2,7 +2,7 @@ import React from 'react';
 import './login-bar.css';
 import logo from '../../assets/logo.svg';
 import '../HomeNavBar/home-navbar.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { postLogin } from '../../services/Api';
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify'
@@ -18,6 +18,10 @@ const LoginBar = () => {
     const navigate = useNavigate()
 
     // useEffect( ()=>{
+    //     let token = localStorage.getItem("token")
+    //     if(token){
+    //         navigate("/")
+    //     }
 
     // },[])
 

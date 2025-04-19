@@ -1,53 +1,125 @@
-.pump{
+.pump-and-history-container {
     display: flex;
-    justify-content: center;
-    gap: 9%;
-    margin-top: 8vh ;
+    gap: 4vw;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 30px auto;
+  }
+  
+.left-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-.pump-control, .pump-schedule{
-    border: 1px solid #584747;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: #544f4f 0px 0px 5px 0px;
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically if needed */
+  text-align: center;
 }
-.pump-button, .pump-schedule-button{
-    display: flex;
-    justify-content: center;
-    gap: 10%;
+
+.pump-image {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.status-on {
+  color: #28a745;
+  margin: 10px 0;
+}
+
+.status-off {
+  color: #888;
+  margin: 10px 0;
+}
+
+.pump-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  width: 100px; /* Fixed width for consistency */
+}
+
+.on-pump {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.off-pump {
+  background-color: #ff4d4f;
+  color: #fff;
+}
+
+.schedule-button {
+  background-color: #1890ff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 12vw; /* Fixed width for consistency */
+}
+
+.schedule-button a {
+  color: #fff;
+  text-decoration: none;
+  display: block; /* Ensure NavLink takes full button space */
+}
+
+  /* Right Side */
+  .right-side {
+    width: 48vw;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .history-title {
+    font-size: 1.5rem;
     margin-bottom: 20px;
-}
-
-.button {
-   
-    padding: 10px 24px;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.on-pump{
-    background-color: #4CAF50;
-    color: white;
-}
-.off-pump{
-    background-color: #f44336;
-    color: white;
-}
-.off-pump:hover{
-    background-color: #ef6f66;
-}
+  }
+  
+  .filter-history {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    /* justify-content: center; */
+  }
+  
+  .history-table {
+    width: 100%;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .pump-and-history-container {
+      flex-direction: column;
+    }
+  
+    .right-side {
+      width: 100%;
+    }
+  
+    .pump-image {
+      max-width: 120px;
+    }
+  }
 
-.link-watering{
-    background-color: #36add1;
-    color: white;
-}
-
-.link-watering:hover{
-    background-color: #4bb5d5;
-}
-
-.button a{
-    color: #fff;
+  button:focus, button:focus-visible {
+    outline: none;
+    box-shadow: none;
 }

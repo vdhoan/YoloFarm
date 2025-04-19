@@ -110,6 +110,7 @@
 
 .login-bar button:hover:enabled {
     background-color: #237c27;
+    outline: none;
 }
 
 .login-bar button:disabled {
