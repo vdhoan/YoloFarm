@@ -7,10 +7,10 @@ export const UserContext = createContext({});
 
 export const AppProvider = ({ children }) => {
     const [userData, setUserData] = useState({})
-
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
-        const token = localStorage.getItem("token")
+        
         if (!token) {
             return
         }
@@ -25,7 +25,7 @@ export const AppProvider = ({ children }) => {
             }
         }
         getMyInfor()
-    }, [])
+    }, [token])
     return (
         <UserContext.Provider value={{ userData }}>
             {children}

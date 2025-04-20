@@ -29,8 +29,9 @@
 
 .yolofarm {
     /* display: inline-block; */
-    padding-top: 5px;
+    padding-top: 10px;
     margin-left: 0.8vw;
+    /* margin-right: 0.8vw; */
 }
 .home{
     margin-top: 3px;
