@@ -14,14 +14,8 @@ import LockResetIcon from "@mui/icons-material/LockReset";
 import { UserContext } from "../../components/Context/userContext";
 
 export default function UserProfileCard() {
-  const {userData} = useContext(UserContext)
-  console.log("layour ",userData)
-  // const [profile, setProfile] = useState({});
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setUserData(prev => ({ ...prev, [name]: value }));
-  // };
+  const { userData } = useContext(UserContext)
+  console.log("layour ", userData)
 
   return (
     <Paper
@@ -43,7 +37,7 @@ export default function UserProfileCard() {
       <Box textAlign="center" mb={3}>
         <Avatar sx={{ width: 80, height: 80, mx: "auto" }} />
         <Typography mt={1} fontWeight="bold">
-          {userData?.name} 
+          {userData?.name}
         </Typography>
 
         <Box mt={1} display="flex" justifyContent="center" gap={2}>
@@ -62,13 +56,13 @@ export default function UserProfileCard() {
         </Box>
       </Box>
 
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
+      {/* <Grid container spacing={2}>
+        <Grid xs={6}>
           <div className="lastname-box">
             <TextField
               label="User Name"
               name="UserName"
-              value={userData?.username}
+              value={userData?.username || ""}
               // onChange={handleChange}
               fullWidth
               disabled
@@ -85,12 +79,12 @@ export default function UserProfileCard() {
             />
           </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid xs={6}>
           <div className="firstname-box">
             <TextField
               label="Họ tên"
               name="Name"
-              value={userData?.name}
+              value={userData?.name || ""}
               disabled
               // onChange={handleChange}
               fullWidth
@@ -108,12 +102,12 @@ export default function UserProfileCard() {
           </div>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid xs={12}>
           <div className="email-box">
             <TextField
               label="ID người dùng"
               name="id"
-              value={userData?._id}
+              value={userData?._id || ""}
               disabled
               // onChange={handleChange}
               fullWidth
@@ -131,7 +125,7 @@ export default function UserProfileCard() {
           </div>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid xs={12}>
           <div className="username-box">
             <TextField
               label="Địa chỉ"
@@ -153,7 +147,101 @@ export default function UserProfileCard() {
             />
           </div>
         </Grid>
+      </Grid> */}
+      <Grid
+        container
+        spacing={2}
+        sx={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 2 }}
+      >
+        <Grid sx={{ gridColumn: 'span 6' }}>
+          <div className="lastname-box">
+            <TextField
+              label="User Name"
+              name="UserName"
+              value={userData?.username || ""}
+              fullWidth
+              disabled
+              variant="filled"
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  width: "100%",
+                  backgroundColor: "#d3cdcd",
+                  borderRadius: "6px",
+                  fontWeight: 500,
+                },
+              }}
+            />
+          </div>
+        </Grid>
+
+        <Grid sx={{ gridColumn: 'span 6' }}>
+          <div className="firstname-box">
+            <TextField
+              label="Họ tên"
+              name="Name"
+              value={userData?.name || ""}
+              disabled
+              fullWidth
+              variant="filled"
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  width: "100%",
+                  backgroundColor: "#d3cdcd",
+                  borderRadius: "6px",
+                  fontWeight: 500,
+                },
+              }}
+            />
+          </div>
+        </Grid>
+
+        <Grid sx={{ gridColumn: 'span 12' }}>
+          <div className="email-box">
+            <TextField
+              label="ID người dùng"
+              name="id"
+              value={userData?._id || ""}
+              disabled
+              fullWidth
+              variant="filled"
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  width: "100%",
+                  backgroundColor: "#d3cdcd",
+                  borderRadius: "6px",
+                  fontWeight: 500,
+                },
+              }}
+            />
+          </div>
+        </Grid>
+
+        <Grid sx={{ gridColumn: 'span 12' }}>
+          <div className="username-box">
+            <TextField
+              label="Địa chỉ"
+              name="address"
+              value={"Đường Tạ Quang Bửu, phường Linh Trung, thành phố Thủ Đức, Thành phố Hồ Chí Minh."}
+              disabled
+              fullWidth
+              variant="filled"
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  width: "100%",
+                  backgroundColor: "#d3cdcd",
+                  borderRadius: "6px",
+                  fontWeight: 500,
+                },
+              }}
+            />
+          </div>
+        </Grid>
       </Grid>
+
     </Paper>
   );
 }

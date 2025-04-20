@@ -144,4 +144,14 @@ export const profile = (token)=>{
     
 }
 
+export const logout = (token)=>{
+    const response = instance.post("/api/auth/signout",{},{
+        headers:{
+            Authorization: `Bearesr ${token}`
+        }
+    })
+    
+    return response
+}
+
 

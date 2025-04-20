@@ -6,9 +6,7 @@ import { useState, useEffect } from 'react';
 import { postLogin } from '../../services/Api';
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify'
-
-
-
+import { Navigate } from "react-router-dom";
 
 const LoginBar = () => {
     const [usename, setUsername] = useState("")
@@ -17,13 +15,11 @@ const LoginBar = () => {
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
 
-    // useEffect( ()=>{
-    //     let token = localStorage.getItem("token")
-    //     if(token){
-    //         navigate("/")
-    //     }
-
-    // },[])
+    useEffect( ()=>{
+        if (localStorage.getItem("token")) {
+            return <Navigate to="/" />;
+          }
+    },[])
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -78,7 +74,8 @@ const LoginBar = () => {
                         placeholder="Tài khoản"
                         value={usename}
                         onChange={(e) => { setUsername(e.target.value) }}
-                        required />
+                        required 
+                        autoComplete="username"/>
                     <div className='password'>
                         <input
                             className='input-password'
@@ -86,7 +83,8 @@ const LoginBar = () => {
                             placeholder="Mật khẩu"
                             value={password}
                             onChange={(e) => { setPassword(e.target.value) }}
-                            required />
+                            required
+                            autoComplete="current-password" />
                         <span onClick={()=>setShowPassword(!showPassword)}>
                             {showPassword ? 
                              (

@@ -14,41 +14,41 @@ import Warning from './pages/Warning/Warning'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from './PrivateRoute/PrivateRoute'
-import GlobalWarningChecker from "../src/components/Notify/Notify.jsx";
+// import GlobalWarningChecker from "../src/components/Notify/Notify.jsx";
 
 
 function App() {
-    const token = localStorage.getItem("token")
+    // const token = localStorage.getItem("token")
     return (
         <>
             <Routes>
                 <Route path="/login" element={<LoginBar />} />
                 <Route path="/" element={
-                    <PrivateRoute token={token}>
+                    <PrivateRoute >
                         <LayoutDefault />
                     </PrivateRoute>
 
                 } >
                 <Route index element={
-                        <PrivateRoute token={token}>
+                        <PrivateRoute >
                             <HomeNavBar />
                         </PrivateRoute>
                     } />
                     <Route path="device" element={
-                        <PrivateRoute token={token}>
+                        <PrivateRoute>
                             <Divice />
                         </PrivateRoute>
                     } />
                     <Route path="watering" element={
-                        <PrivateRoute token={token}>
+                        <PrivateRoute>
                             <AutomaticWatering />
                         </PrivateRoute>
                     } />
-                    <Route path="pump" element={<PrivateRoute token={token}>
+                    <Route path="pump" element={<PrivateRoute>
                         <Pump />
                     </PrivateRoute>
                     } />
-                    <Route path="statistics" element={<PrivateRoute token={token}>
+                    <Route path="statistics" element={<PrivateRoute>
                         <Statistics />
                     </PrivateRoute>
                     } />
@@ -56,22 +56,22 @@ function App() {
                         <History />
                     </PrivateRoute>
                     } /> */}
-                    <Route path="thresholds" element={<PrivateRoute token={token}>
+                    <Route path="thresholds" element={<PrivateRoute>
                         <Thresholds />
                     </PrivateRoute>
                     } />
-                    <Route path="user" element={<PrivateRoute token={token}>
+                    <Route path="user" element={<PrivateRoute>
                         <User />
                     </PrivateRoute>
                     } />
-                    <Route path="warning" element={<PrivateRoute token={token}>
+                    <Route path="warning" element={<PrivateRoute>
                         <Warning />
                     </PrivateRoute>
                     } />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
-            <GlobalWarningChecker token={token} />
+            {/* <GlobalWarningChecker token={token} /> */}
       
             <ToastContainer />
         </>

@@ -20,8 +20,8 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center horizontally */
-  justify-content: center; /* Center vertically if needed */
+  align-items: center; 
+  justify-content: center; 
   text-align: center;
 }
 
@@ -49,7 +49,7 @@
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s;
-  width: 100px; /* Fixed width for consistency */
+  width: 100px; 
 }
 
 .on-pump {
@@ -69,16 +69,16 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 12vw; /* Fixed width for consistency */
+  width: 12vw; 
 }
 
 .schedule-button a {
   color: #fff;
   text-decoration: none;
-  display: block; /* Ensure NavLink takes full button space */
+  display: block; 
 }
 
-  /* Right Side */
+ 
   .right-side {
     width: 48vw;
     background: #fff;
@@ -97,14 +97,14 @@
     display: flex;
     gap: 10px;
     margin-bottom: 10px;
-    /* justify-content: center; */
+    
   }
   
   .history-table {
     width: 100%;
   }
   
-  /* Responsive Design */
+ 
   @media (max-width: 768px) {
     .pump-and-history-container {
       flex-direction: column;

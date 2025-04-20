@@ -8,8 +8,9 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import { useContext, useState } from "react";
 import { UserContext } from "../Context/userContext";
 import { NavLink } from "react-router-dom";
+import { logout } from "../../services/Api";
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 export default function LayoutDefault() {
     const [modal, setModal] = useState(false)
@@ -23,6 +24,9 @@ export default function LayoutDefault() {
         setMenuFold(true)
     }
     const handleLockout = () =>{
+        const token = localStorage.getItem("token")
+        const response = logout(token)
+        console.log(response)
         localStorage.removeItem("token")
         navigate("/login")
 
