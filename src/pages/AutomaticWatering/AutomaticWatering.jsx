@@ -55,8 +55,9 @@ export default function AutomaticWatering() {
         }
     ];
 
-    const handleDelete = async (autoId) => {
-        const response = await deleteWatering(autoId);
+    const handleDelete = async ( autoId) => {
+        const tokend = localStorage.getItem("token")
+        const response = await deleteWatering(tokend, autoId);
         console.log(response)
         setChangeData(!changeData)
         notification.success({

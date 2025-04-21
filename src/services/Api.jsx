@@ -39,12 +39,13 @@ export const getWatering = async (token)=>{
     });
     return response;
 }
-export const deleteWatering = async (token,autoId)=>{
+export const deleteWatering = async (tokend,autoId)=>{
     const response = await instance.delete(`/api/watering/automatic/${autoId}`,{
         headers:{
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${tokend}`
         }
     })
+    console.log(response)
     return response;
 }
 
