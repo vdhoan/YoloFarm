@@ -1,4 +1,3 @@
-/* NavBar.css */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -28,24 +27,24 @@
 }
 
 .yolofarm {
-    /* display: inline-block; */
+   
     padding-top: 10px;
     margin-left: 0.8vw;
     /* margin-right: 0.8vw; */
 }
-.home{
-    margin-top: 3px;
-    height: 89vh;
-    width: 87vw;
-}
 
-.home-page {
-    width: 97%;  
-    height: 100%; 
-    object-fit: cover; 
-    border-radius: 10px;
-}
 .email {
     font-size: 0.7rem; 
     margin-right: 30px;
+}
+
+.home-img {
+    background-image: url('../../assets/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 89vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,43 +1,187 @@
-// import { NavLink } from "react-router-dom";
-import { Form, Button, Input, Popconfirm } from "antd";
-import "./AutomaticWatering.css";
-import { TimePicker, DatePicker, Checkbox, Table, Pagination } from "antd";
 import { useEffect, useState } from "react";
-
+import { Form, Button, Input, Popconfirm, Table, DatePicker, TimePicker, notification } from "antd";
+import { FilterOutlined, DeleteOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
-import { notification } from "antd";
-import { FilterOutlined, DeleteOutlined } from '@ant-design/icons'
-import { deleteWatering, getWatering, postWatering } from "../../services/Api";
 
+
+import { deleteWatering, getStartTime,getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering } from "../../services/Api";
+import "./AutomaticWatering.css";
 
 export default function AutomaticWatering() {
+    const [form] = Form.useForm();
+    const token = localStorage.getItem("token");
+    const [data, setData] = useState([]);
     const [changeData, setChangeData] = useState(false);
-    const [data, setData] = useState([])
-    const token = localStorage.getItem("token")
+    const [nextStartTime, setNextStartTime] = useState(null);
+    const [nextEndTime, setNextEndTime] = useState(null);
 
+    const updateNextWatering = async (schedules) => {
+        const now = dayjs();
+
+        const futureTimes = schedules.flatMap(item =>
+            item.wateringTimes?.startTimes.map((_, index) => ({
+                start: dayjs(item.wateringTimes.startTimes[index].date, 'YYYY-MM-DD HH:mm'), 
+                end: dayjs(item.wateringTimes.endTimes[index].date, 'YYYY-MM-DD HH:mm'),     
+            }))
+        ).filter(time => time.start.isAfter(now));
+        console.log("futureTimes in updateNextWatering", futureTimes)
+        if (futureTimes.length > 0) {
+            const next = futureTimes.reduce((a, b) => a.start.isBefore(b.start) ? a : b);
+            setNextStartTime(next.start);
+            setNextEndTime(next.end);
+            try {
+                await postTimeStart(next.start);
+                await postTimeEnd(next.end);
+                console.log("next start time ", next.start);
+                console.log("next end time ", next.end);
+            } catch (error) {
+                console.error('Error posting times:', error);
+                notification.error({
+                    message: 'Lỗi',
+                    description: 'Không thể cập nhật thời gian tưới!'
+                });
+            }
+        } else {
+            setNextStartTime(null);
+            setNextEndTime(null);
+        }
+    };
+
+
+    // const renderNextWatering = async () => {
+    //     if (!nextStartTime || !nextEndTime) {
+    //         return <div className="next-watering-box">Không có lịch tưới sắp tới</div>;
+    //     }
+    //     // console.log("render next watering ", nextStartTime)
+    //     let res1 ;
+    //     let res2;
+    //     try {
+    //          res1 = await getStartTime();
+    //          res2 = await getEndtTime();
+    //     }catch (err){
+    //         console.error("lỗi lấy dữ liệu ", err)
+    //     }
+    //     return (
+    //         <div className="next-watering-box">
+    //             <h3>Lịch tưới tiếp theo</h3>
+    //             <p>
+    //                 <strong>Bắt đầu:</strong> {res1}
+    //             </p>
+    //             <p>
+    //                 <strong>Kết thúc:</strong> {res2}
+    //             </p>
+    //         </div>
+    //     );
+    // };
+    const renderNextWatering = () => {
+        if (!nextStartTime || !nextEndTime) {
+            return <div className="next-watering-box">Không có lịch tưới sắp tới</div>;
+        }
+        // console.log("render next watering ", nextStartTime)
+        
+        return (
+            <div className="next-watering-box">
+                <h3>Lịch tưới tiếp theo</h3>
+                <p>
+                    <strong>Bắt đầu:</strong> {nextStartTime.format('HH:mm [ngày] DD/MM/YYYY')}
+                </p>
+                <p>
+                    <strong>Kết thúc:</strong> {nextEndTime.format('HH:mm [ngày] DD/MM/YYYY')}
+                </p>
+            </div>
+        );
+    };
+
+    const getData = async () => {
+        try {
+            const response = await getWatering(token);
+            const schedules = response.data;
+            setData(schedules);
+            // console.log("schedules in get data", schedules)
+            updateNextWatering(schedules);
+        } catch (err) {
+            console.error("Lỗi tải dữ liệu tưới:", err);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, [changeData]);
+
+    const handleDelete = async (autoId) => {
+        try {
+            await deleteWatering(token, autoId);
+            setChangeData(prev => !prev);
+            // await deleteSchedule()
+            notification.success({
+                message: 'Thành công',
+                description: 'Xoá lịch tưới thành công!'
+            });
+        } catch (error) {
+            console.error("handleDelete erorr catch", error)
+            notification.error({
+                message: 'Lỗi',
+                description: 'Không thể xoá lịch tưới!'
+            });
+        }
+    };
+
+    const handleSubmitForm = async (values) => {
+        const newStart = dayjs(`${values.startDate.format('YYYY-MM-DD')} ${values.startTime.format('HH:mm')}`);
+        const newEnd = dayjs(`${values.endDate.format('YYYY-MM-DD')} ${values.endTime.format('HH:mm')}`);
+
+        const formPayload = {
+            startDate: values.startDate.format('YYYY-MM-DD'),
+            startTime: values.startTime.format('HH:mm'),
+            endDate: values.endDate.format('YYYY-MM-DD'),
+            endTime: values.endTime.format('HH:mm'),
+        };
+
+        try {
+            await postWatering(token, formPayload);
+            setChangeData(prev => !prev);
+
+            if (!nextStartTime || newStart.isBefore(nextStartTime)) {
+                setNextStartTime(newStart);
+                setNextEndTime(newEnd);
+            }
+
+            notification.success({
+                message: 'Thành công',
+                description: 'Cập nhật lịch tưới thành công!'
+            });
+        } catch (error) {
+            notification.error({
+                message: "Có lỗi xảy ra",
+                description: error?.response?.data?.error || "Lỗi không xác định"
+            });
+        }
+    };
 
     const columns = [
         {
             title: 'Ngày bắt đầu',
             dataIndex: 'startDate',
             key: 'startDate',
-            render: (date) => dayjs(date).format('DD/MM/YYYY'),
+            render: (date) => date ? dayjs(date, 'YYYY-MM-DD').format('DD/MM/YYYY') : '',
         },
         {
             title: 'Ngày kết thúc',
             dataIndex: 'endDate',
             key: 'endDate',
-            render: (date) => dayjs(date).format('DD/MM/YYYY'),
+            render: (date) => date ? dayjs(date, 'YYYY-MM-DD').format('DD/MM/YYYY') : '',
         },
         {
             title: 'Thời gian bắt đầu',
             dataIndex: 'startTime',
             key: 'startTime',
+            render: (time) => time || '',
         },
         {
-            title: 'Thời gian kết đầu',
+            title: 'Thời gian kết thúc',
             dataIndex: 'endTime',
             key: 'endTime',
+            render: (time) => time || '',
         },
         {
             title: 'Xóa lịch',
@@ -55,116 +199,68 @@ export default function AutomaticWatering() {
         }
     ];
 
-    const handleDelete = async ( autoId) => {
-        const tokend = localStorage.getItem("token")
-        const response = await deleteWatering(tokend, autoId);
-        console.log(response)
-        setChangeData(!changeData)
-        notification.success({
-            message: 'Thành công',
-            description: 'Xoá lịch tưới thành công!'
-        })
-    }
-    useEffect(() => {
-       
-        const getData = async () => {
+    const getDisabledTime = (selectedDate) => {
+        const now = dayjs();
+        const isToday = selectedDate && dayjs(selectedDate).isSame(now, 'day');
 
-            const response = await getWatering(token);
-            setData(response.data)
-            // console.log(response.data)
-        }
+        if (!isToday) return {};
+        return {
+            disabledHours: () => [...Array(now.hour()).keys()],
+            disabledMinutes: (selectedHour) =>
+                selectedHour === now.hour() ? [...Array(now.minute()).keys()] : [],
+        };
+    };
 
-        getData();
-    }, [changeData])
+    const formattedData = data.map(item => ({ ...item, key: item.autoId }));
 
-    // const onChange = (time, timeString) => {
-    //     console.log(time, timeString);
-    // };
-    const handleSubmitForm = async (values) => {
-        console.log(values);
-        const formSunmit = {
-            startDate: values.startDate.format('YYYY-MM-DD'), 
-            startTime: values.startTime.format('HH:mm'),
-            endDate: values.endDate.format('YYYY-MM-DD'),
-            endTime: values.endTime.format('HH:mm'),
-        }
-        try{
-            const response = await postWatering(token, formSunmit)
-            setChangeData(!changeData)
-            console.log("hi",response)
-            notification.success({
-                        message: 'Thành công',
-                        description: 'Cập nhật lịch thành công!'
-                    })
-        } catch(error){
-            notification.error({
-                message: "Có lỗi xảy ra",
-                description: error?.response?.data?.error || error.message || "Lỗi không xác định"
-            });
-        }
-        
-    }
-
-    // const [checked, setChecked] = useState(false);
-    // const onChangeActive = (e) => {
-    //     setChecked(e.target.checked);
-    //     console.log("Checkbox checked:", e.target.checked);
-    // };
-    const formattedData = data.map((item) => ({
-        ...item,
-        key: item.autoId,
-    }));
     return (
         <div className="all-watering">
-
-            <div className='history-watering'>
-                <div className='filter-watering'>
-                    <DatePicker placeholder='Chọn ngày' />
-                    <DatePicker picker='month' placeholder='Chọn tháng' />
-                    {/* <DatePicker picker='year' placeholder='Chọn năm' /> */}
-                    <Button type='primary'>Tìm kiếm <FilterOutlined /></Button>
-                </div>
-                <div className='table-watering'>
-                    <h2>LỊCH SỬ TẠO TƯỚI NƯỚC TỰ ĐỘNG</h2>
-                    <Table
-                        columns={columns}
-                        dataSource={formattedData}
-                        pagination={true}
-                        scroll={{ y: 300 }}
-                    />
-                </div>
-            </div>
             <div className="watering">
+                <div className='filter-watering'>
+                    {renderNextWatering()}
+                </div>
                 <div className="watering-form">
                     <div className="watering-titile">
-                        <h2 > TẠO LỊCH TƯỚI TỰ ĐỘNG </h2>
+                        <h2>TẠO LỊCH TƯỚI TỰ ĐỘNG</h2>
                         <hr />
                     </div>
 
-                    <Form layout='vertical' size='large' onFinish={handleSubmitForm} >
+                    <Form layout="vertical" size="large" form={form} onFinish={handleSubmitForm}>
                         <div className="date">
                             <Form.Item
                                 label="Ngày bắt đầu"
                                 name="startDate"
                                 rules={[{ required: true, message: "Vui lòng nhập ngày!" }]}
                             >
-                                <DatePicker placeholder="Chọn ngày"  />
+                                <DatePicker
+                                    placeholder="Chọn ngày"
+                                    disabledDate={(current) => current && current < dayjs().startOf('day')}
+                                />
                             </Form.Item>
+
                             <Form.Item
                                 label="Ngày kết thúc"
                                 name="endDate"
                                 rules={[{ required: true, message: "Vui lòng nhập ngày!" }]}
                             >
-                                <DatePicker placeholder="Chọn ngày"  />
+                                <DatePicker
+                                    placeholder="Chọn ngày"
+                                    disabledDate={(current) => current && current < dayjs().startOf('day')}
+                                />
                             </Form.Item>
                         </div>
+
                         <div className="time">
                             <Form.Item
                                 label="Bắt đầu"
                                 name="startTime"
                                 rules={[{ required: true, message: "Vui lòng nhập thời gian!" }]}
                             >
-                                <TimePicker placeholder="Chọn giờ" format={'HH:mm'} />
+                                <TimePicker
+                                    placeholder="Chọn giờ"
+                                    format="HH:mm"
+                                    disabledTime={() => getDisabledTime(form.getFieldValue('startDate'))}
+                                />
                             </Form.Item>
 
                             <Form.Item
@@ -172,27 +268,40 @@ export default function AutomaticWatering() {
                                 name="endTime"
                                 rules={[{ required: true, message: "Vui lòng nhập thời gian!" }]}
                             >
-                                <TimePicker placeholder="Chọn giờ" format={'HH:mm'} />
+                                <TimePicker
+                                    placeholder="Chọn giờ"
+                                    format="HH:mm"
+                                    disabledTime={() => getDisabledTime(form.getFieldValue('endDate'))}
+                                />
                             </Form.Item>
                         </div>
 
-                        {/* <Form.Item
-                            name="active"
-                        >
-                            <Checkbox checked={checked} onChange={onChangeActive}>Lặp lại</Checkbox>
-                        </Form.Item> */}
                         <Form.Item>
                             <div className='submit-watering'>
-                                <Button type="primary" htmlType="submit" >
+                                <Button type="primary" htmlType="submit">
                                     Tạo lịch
                                 </Button>
                             </div>
-
                         </Form.Item>
                     </Form>
                 </div>
             </div>
+            <div className='history-watering'>
+                <div className='table-watering'>
+                    <h2>LỊCH SỬ TẠO TƯỚI NƯỚC TỰ ĐỘNG</h2>
+                    <div className='filter-watering'>
+                        <DatePicker placeholder='Chọn ngày' />
+                        <DatePicker picker='month' placeholder='Chọn tháng' />
+                        <Button type='primary'>Tìm kiếm <FilterOutlined /></Button>
+                    </div>
+                    <Table
+                        columns={columns}
+                        dataSource={formattedData}
+                        pagination={{ pageSize: 10 }}
+                        height={700}
+                    />
+                </div>
+            </div>
         </div>
-
     );
 }

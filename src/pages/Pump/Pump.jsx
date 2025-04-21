@@ -45,7 +45,7 @@ export default function PumpAndHistory() {
             }
         };
         fetchData();
-    }, [isOn]);
+    }, [isOn,token]);
 
     // Handle pump control
     const handleChangePump = async () => {
@@ -86,7 +86,6 @@ export default function PumpAndHistory() {
                 </div>
             </div>
 
-            {/* Right Side: History Table */}
             <div className="right-side">
                 <h2 className="history-title">LỊCH SỬ BƠM NƯỚC</h2>
                 <div className="filter-history">

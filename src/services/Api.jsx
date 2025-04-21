@@ -103,6 +103,15 @@ export const getStatusPump = async()=>{
     const response = await adafruit.get("/pump/data")
     return response
 }
+export const getStartTime = async()=>{
+    const response = await adafruit.get("time-start/data")
+    return response
+}
+export const getEndtTime = async()=>{
+    const response = await adafruit.get("time-end/data")
+    return response
+}
+
 const API_KEY = import.meta.env.VITE_ADAFRUIT_IO_KEY;
 export const controlPump = async(status)=>{
   
@@ -124,7 +133,60 @@ export const controlPump = async(status)=>{
         console.error("Error:", error.response ? error.response.data : error.message);
     }
 };
+export const postTimeStart = async (value) => {
+    try {
+        const response = await adafruit.post('/time-start/data', 
+            { value: value },
+            {
+                headers: {
+                    "X-AIO-Key": API_KEY,
+                    "Content-Type": "application/json",
+                }
+            }
+        );
 
+        console.log('Cập nhật thành công:', response.data);
+    } catch (error) {
+        console.error('Lỗi khi cập nhật time-end:', error.response?.data || error.message);
+    }
+};
+export const postTimeEnd = async (value) => {
+    try {
+        const response = await adafruit.post('/time-end/data', 
+            { value: value },
+            {
+                headers: {
+                    "X-AIO-Key": API_KEY,
+                    "Content-Type": "application/json",
+                }
+            }
+        );
+
+        console.log('Cập nhật thành công:', response.data);
+    } catch (error) {
+        console.error('Lỗi khi cập nhật time-end:', error.response?.data || error.message);
+    }
+};
+
+
+// export const deleteSchedule = async (scheduleId) =>{
+//     try {
+//         const response = await adafruit.delete(
+//             `/time-end/data/${scheduleId}`,
+//             {
+//                 headers: {
+//                     "X-AIO-Key": API_KEY,
+//                     "Content-Type": "application/json",
+//                 }
+//             }
+//         );
+
+//         console.log("Response:", response);
+//         return response
+//     } catch (error) {
+//         console.error("Error:", error.response ? error.response.data : error.message);
+//     }
+// }
 export const postLogin =  (username, password)=>{
     try {
         const response = instance.post("/api/auth/signin",{username,password});
