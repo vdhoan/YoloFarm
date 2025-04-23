@@ -13,5 +13,10 @@
 }
 
 .menu-bar.collapsed .ant-menu-item-icon {
-    /* font-size: 28px; */
+    font-size: 22px;
   }
+
+.ant-menu .ant-menu-item .anticon,
+.ant-menu .ant-menu-submenu-title .anticon {
+    min-width: 22px !important;
+}

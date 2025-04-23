@@ -2,33 +2,31 @@ import { createContext, useEffect } from "react";
 import { profile } from "../../services/Api";
 import { useState } from "react";
 
-
 export const UserContext = createContext({});
 
 export const AppProvider = ({ children }) => {
-    const [userData, setUserData] = useState({})
-    const token = localStorage.getItem("token")
+    const [userData, setUserData] = useState({});
 
     useEffect(() => {
-        
-        if (!token) {
-            return
-        }
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
         const getMyInfor = async () => {
             try {
-                // console.log(token)
-                const response = await profile(token)
-                console.log(response.data)
-                setUserData(response.data)
+                const response = await profile(token);
+                console.log("user context", response.data);
+                setUserData(response.data);
             } catch (error) {
-                console.log(error)
+                console.error("Failed to fetch user profile:", error);
             }
-        }
-        getMyInfor()
-    }, [token])
+        };
+
+        getMyInfor();
+    }, []);
+
     return (
-        <UserContext.Provider value={{ userData }}>
+        <UserContext.Provider value={{ userData, setUserData }}>
             {children}
         </UserContext.Provider>
-    )
-}
+    );
+};

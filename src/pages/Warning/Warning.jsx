@@ -52,7 +52,7 @@ export default function Warning() {
       if (selectedMonth) {
         params.month = dayjs(selectedMonth).format('YYYY-MM');
       }
-      const response = await getWarning(token, params); // Giả sử API hỗ trợ params
+      const response = await getWarning(token, params); 
       setData(response.data);
     } catch (error) {
       console.error('Lỗi khi lấy dữ liệu cảnh báo:', error);

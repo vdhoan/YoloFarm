@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box,
   Grid,
@@ -11,11 +11,29 @@ import {
 import "./User.css"
 import EditIcon from "@mui/icons-material/Edit";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import { UserContext } from "../../components/Context/userContext";
+import { profile } from "../../services/Api";
+// import { UserContext } from "../../components/Context/userContext";
 
 export default function UserProfileCard() {
-  const { userData } = useContext(UserContext)
-  console.log("layour ", userData)
+  // const { userData } = useContext(UserContext)
+  const [userData, setUserData] = useState({})
+  // console.log("layour ", userData)
+  useEffect(() => {
+          const token = localStorage.getItem("token");
+          if (!token) return;
+  
+          const getMyInfor = async () => {
+              try {
+                  const response = await profile(token);
+                  // console.log("user context", response.data);
+                  setUserData(response.data);
+              } catch (error) {
+                  console.error("Failed to fetch user profile:", error);
+              }
+          };
+  
+          getMyInfor();
+      }, []);
 
   return (
     <Paper
@@ -56,98 +74,6 @@ export default function UserProfileCard() {
         </Box>
       </Box>
 
-      {/* <Grid container spacing={2}>
-        <Grid xs={6}>
-          <div className="lastname-box">
-            <TextField
-              label="User Name"
-              name="UserName"
-              value={userData?.username || ""}
-              // onChange={handleChange}
-              fullWidth
-              disabled
-              variant="filled"
-              InputProps={{
-                disableUnderline: true,
-                sx: {
-                  width: "300px",
-                  backgroundColor: "#d3cdcd",
-                  borderRadius: "6px",
-                  fontWeight: 500,
-                },
-              }}
-            />
-          </div>
-        </Grid>
-        <Grid xs={6}>
-          <div className="firstname-box">
-            <TextField
-              label="Họ tên"
-              name="Name"
-              value={userData?.name || ""}
-              disabled
-              // onChange={handleChange}
-              fullWidth
-              variant="filled"
-              InputProps={{
-                disableUnderline: true,
-                sx: {
-                  width: "300px",
-                  backgroundColor: "#d3cdcd",
-                  borderRadius: "6px",
-                  fontWeight: 500,
-                },
-              }}
-            />
-          </div>
-        </Grid>
-
-        <Grid xs={12}>
-          <div className="email-box">
-            <TextField
-              label="ID người dùng"
-              name="id"
-              value={userData?._id || ""}
-              disabled
-              // onChange={handleChange}
-              fullWidth
-              variant="filled"
-              InputProps={{
-                disableUnderline: true,
-                sx: {
-                  width: "695px",
-                  backgroundColor: "#d3cdcd",
-                  borderRadius: "6px",
-                  fontWeight: 500,
-                },
-              }}
-            />
-          </div>
-        </Grid>
-
-        <Grid xs={12}>
-          <div className="username-box">
-            <TextField
-              label="Địa chỉ"
-              name="address"
-              disabled
-              value={"Đường Tạ Quang Bửu, phường Linh Trung, thành phố Thủ Đức, Thành phố Hồ Chí Minh."}
-              // onChange={handleChange}
-              fullWidth
-              variant="filled"
-              InputProps={{
-                disableUnderline: true,
-                sx: {
-                  width: "695px",
-                  backgroundColor: "#d3cdcd",
-                  borderRadius: "6px",
-                  fontWeight: 500,
-                },
-              }}
-            />
-          </div>
-        </Grid>
-      </Grid> */}
       <Grid
         container
         spacing={2}

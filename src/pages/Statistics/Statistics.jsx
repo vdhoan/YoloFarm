@@ -9,16 +9,16 @@ export default function Statistics() {
     const [temperature, setTemperature] = useState([])
     const [humidity, setHumidity] = useState([])
     const [soilMoisture, setSoilMoisture] = useState([])
-   // const [timeOut, setTimeOut] = useState(false)
+   const [timeOut, setTimeOut] = useState(false)
     // const [thresholds,setThresholds] = useState(null)
    
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setTimeOut((prev) => !prev);
-  //   }, 12000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeOut((prev) => !prev);
+    }, 12000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
 useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +43,7 @@ useEffect(() => {
     };
   
     fetchData();
-  }, [ token]);
+  }, [ token,timeOut]);
   
   // useEffect(() => {
   //   const sendWarnings = async () => {

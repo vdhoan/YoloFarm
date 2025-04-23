@@ -17,12 +17,7 @@ export default function LayoutDefault() {
     const { userData } = useContext(UserContext);
     const [confirmLogout, setConfirmLogout] = useState(false)
     const navigate = useNavigate()
-    const isMobile = window.innerWidth <= 768;
-    // const [menuFold, setMenuFold] = useState(true)
     const [collapsed, setCollapsed] = useState(false);
-    // const toggleCollapsed = () => {
-    //   setCollapsed(!collapsed);
-    // };
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -108,16 +103,12 @@ export default function LayoutDefault() {
                     </div>
                 </header >
                 <Layout className="sublayout">
-                    {/* <Sider width="15vw" className="sider">
-                        {/* <MenuList props={collapsed} /> }
-                        <MenuList collapsed={collapsed} />
-
-                    </Sider> */}
-                    <Sider width="15vw" className="sider" collapsed={collapsed} collapsedWidth={80} trigger={null}>
+                    <Sider width="15vw" className="sider" collapsed={collapsed} collapsedWidth={80} trigger={null} breakpoint="lg"
+                        onBreakpoint={(broken) => {
+                            setCollapsed(broken);
+                        }}>
                         <MenuList collapsed={collapsed} />
                     </Sider>
-
-
                     <Content className="content">
                         <Outlet />
                     </Content>

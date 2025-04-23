@@ -174,6 +174,7 @@ export const useSensorMonitoring = (token) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if(!token) return;
         const thresholdsResponse = await getThresholds(token);
         const temperatureResponse = await getTemperature();
         const humidityResponse = await getHumidity();
