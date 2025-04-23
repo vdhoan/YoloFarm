@@ -21,7 +21,7 @@ export default function Thresholds() {
        
         const fetchThresholds = async () => {
                 const response = await getThresholds(token);
-                console.log("threshold",response)
+                console.log("threshold",response.temperature)
                 setThresholds(response);    
         };
 
