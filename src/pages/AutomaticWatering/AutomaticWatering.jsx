@@ -36,7 +36,7 @@ export default function AutomaticWatering() {
             if (timeUntilEnd > 0) {
                 setTimeout(() => {
                     updateNextWatering(schedules);
-                }, timeUntilEnd);
+                }, timeUntilEnd+10000);
             } else {
                 updateNextWatering(schedules);
             }
