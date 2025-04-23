@@ -127,18 +127,27 @@ export default function AutomaticWatering() {
         };
 
         try {
-            await postWatering(token, formPayload);
+            const response =await postWatering(token, formPayload);
             setChangeData(prev => !prev);
+            console.log("response post watering create watering", response.status)
 
             if (!nextStartTime || newStart.isBefore(nextStartTime)) {
                 setNextStartTime(newStart);
                 setNextEndTime(newEnd);
             }
-
-            notification.success({
-                message: 'Thành công',
-                description: 'Cập nhật lịch tưới thành công!'
-            });
+            if(response.success){
+                notification.success({
+                    message: 'Thành công',
+                    description: 'Cập nhật lịch tưới thành công!'
+                });
+            }
+            if(response.status !== 200){
+                notification.error({
+                    message:"Lỗi",
+                    description: response.data.error || "Lịch tưới không hợp lệ"
+                })
+            }
+            
         } catch (error) {
             notification.error({
                 message: "Có lỗi xảy ra",
