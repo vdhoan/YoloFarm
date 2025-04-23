@@ -18,7 +18,6 @@ import PrivateRoute from './PrivateRoute/PrivateRoute'
 
 import { useSensorMonitoring } from './services/Sensor';
 
-
 function App() {
      const token = localStorage.getItem("token")
     useSensorMonitoring(token);
