@@ -18,6 +18,7 @@ import PrivateRoute from './PrivateRoute/PrivateRoute'
 
 import { useSensorMonitoring } from './services/Sensor';
 
+// Just a test commit
 
 function App() {
      const token = localStorage.getItem("token")
