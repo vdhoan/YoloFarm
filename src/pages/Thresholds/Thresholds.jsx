@@ -21,6 +21,7 @@ export default function Thresholds() {
        
         const fetchThresholds = async () => {
                 const response = await getThresholds(token);
+                console.log("threshold",response)
                 setThresholds(response);    
         };
 
@@ -61,7 +62,8 @@ export default function Thresholds() {
     // };
     const handleDelete = async (thresholdId) => {
         try{
-            await deleteThresholds(token,thresholdId)
+            const res = await deleteThresholds(token,thresholdId)
+            console.log("delete threshold",res)
             setChangeData(!changeData);
             notification.success({
                 message: "Thành công",

@@ -1,19 +1,31 @@
-// contexts/NotificationContext.js
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
-  const [message, setMessage] = useState("");
+  const [newWarningTrigger, setNewWarningTrigger] = useState(0); 
 
-  const showMessage = (msg) => {
-    setMessage(msg);
-    setTimeout(() => setMessage(""), 5000); // Ẩn sau 5s (tùy chỉnh được)
+  const showError = (message) => {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const triggerNewWarning = () => {
+    setNewWarningTrigger((prev) => prev + 1); 
   };
 
   return (
-    <NotificationContext.Provider value={{ message, showMessage }}>
+    <NotificationContext.Provider value={{ showError, triggerNewWarning, newWarningTrigger }}>
       {children}
+      <ToastContainer />
     </NotificationContext.Provider>
   );
 };

@@ -4,7 +4,7 @@ import { FilterOutlined, DeleteOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 
 
-import { deleteWatering, getStartTime,getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering } from "../../services/Api";
+import { deleteWatering, getStartTime, getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering } from "../../services/Api";
 import "./AutomaticWatering.css";
 
 export default function AutomaticWatering() {
@@ -17,23 +17,36 @@ export default function AutomaticWatering() {
 
     const updateNextWatering = async (schedules) => {
         const now = dayjs();
-
+    
         const futureTimes = schedules.flatMap(item =>
             item.wateringTimes?.startTimes.map((_, index) => ({
-                start: dayjs(item.wateringTimes.startTimes[index].date, 'YYYY-MM-DD HH:mm'), 
-                end: dayjs(item.wateringTimes.endTimes[index].date, 'YYYY-MM-DD HH:mm'),     
+                start: dayjs(item.wateringTimes.startTimes[index].date, 'YYYY-MM-DD HH:mm'),
+                end: dayjs(item.wateringTimes.endTimes[index].date, 'YYYY-MM-DD HH:mm'),
             }))
-        ).filter(time => time.start.isAfter(now));
-        console.log("futureTimes in updateNextWatering", futureTimes)
+        ).filter(time => time.end.isAfter(now));
+        console.log("futureTimes in updateNextWatering", futureTimes);
+    
         if (futureTimes.length > 0) {
             const next = futureTimes.reduce((a, b) => a.start.isBefore(b.start) ? a : b);
             setNextStartTime(next.start);
             setNextEndTime(next.end);
+    
+            const timeUntilEnd = next.end.diff(now, 'millisecond');
+            
+            if (timeUntilEnd > 0) {
+                setTimeout(() => {
+                    updateNextWatering(schedules);
+                }, timeUntilEnd);
+            } else {
+                updateNextWatering(schedules);
+            }
+    
             try {
-                await postTimeStart(next.start);
-                await postTimeEnd(next.end);
-                console.log("next start time ", next.start);
-                console.log("next end time ", next.end);
+                    await postTimeStart(next.start.format("D-M-YYYY-HH-mm"));
+                    await postTimeEnd(next.end.format("D-M-YYYY-HH-mm"));
+                
+                // console.log("next start  ", next.start.format("D-M-YYYY-HH-mm"));
+                // console.log("next end time ", next.end.format("D-M-YYYY-HH-mm"));
             } catch (error) {
                 console.error('Error posting times:', error);
                 notification.error({
@@ -48,37 +61,13 @@ export default function AutomaticWatering() {
     };
 
 
-    // const renderNextWatering = async () => {
-    //     if (!nextStartTime || !nextEndTime) {
-    //         return <div className="next-watering-box">Không có lịch tưới sắp tới</div>;
-    //     }
-    //     // console.log("render next watering ", nextStartTime)
-    //     let res1 ;
-    //     let res2;
-    //     try {
-    //          res1 = await getStartTime();
-    //          res2 = await getEndtTime();
-    //     }catch (err){
-    //         console.error("lỗi lấy dữ liệu ", err)
-    //     }
-    //     return (
-    //         <div className="next-watering-box">
-    //             <h3>Lịch tưới tiếp theo</h3>
-    //             <p>
-    //                 <strong>Bắt đầu:</strong> {res1}
-    //             </p>
-    //             <p>
-    //                 <strong>Kết thúc:</strong> {res2}
-    //             </p>
-    //         </div>
-    //     );
-    // };
+   
     const renderNextWatering = () => {
         if (!nextStartTime || !nextEndTime) {
             return <div className="next-watering-box">Không có lịch tưới sắp tới</div>;
         }
         // console.log("render next watering ", nextStartTime)
-        
+
         return (
             <div className="next-watering-box">
                 <h3>Lịch tưới tiếp theo</h3>

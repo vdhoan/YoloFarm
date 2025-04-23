@@ -16,9 +16,12 @@ import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from './PrivateRoute/PrivateRoute'
 // import GlobalWarningChecker from "../src/components/Notify/Notify.jsx";
 
+import { useSensorMonitoring } from './services/Sensor';
+
 
 function App() {
-    // const token = localStorage.getItem("token")
+     const token = localStorage.getItem("token")
+    useSensorMonitoring(token);
     return (
         <>
             <Routes>

@@ -135,6 +135,7 @@ export const controlPump = async(status)=>{
 };
 export const postTimeStart = async (value) => {
     try {
+        console.log("trong ham postTimeStart", value)
         const response = await adafruit.post('/time-start/data', 
             { value: value },
             {
@@ -152,6 +153,7 @@ export const postTimeStart = async (value) => {
 };
 export const postTimeEnd = async (value) => {
     try {
+        console.log("trong ham postTimeend", value)
         const response = await adafruit.post('/time-end/data', 
             { value: value },
             {
