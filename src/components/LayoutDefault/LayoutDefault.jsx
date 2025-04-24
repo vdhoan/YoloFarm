@@ -41,7 +41,7 @@ export default function LayoutDefault() {
         const response = logout(token)
         console.log(response)
         localStorage.removeItem("token")
-        navigate("/login")
+        navigate("/about")
 
     }
     return (

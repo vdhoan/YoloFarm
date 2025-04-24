@@ -1,14 +1,14 @@
-/* General styles */
+
 .partner-page {
     min-height: 100vh;
     background-color: #e6f0e9;
     color: #1a3c34;
-    font-family: 'Roboto', sans-serif; /* Đổi sang Roboto */
+    font-family: 'Roboto', sans-serif; 
     display: flex;
     flex-direction: column;
 }
 
-/* navbar-about */
+
 .navbar-about {
     background: linear-gradient(135deg, #0F9F3F, #2ecc71);
     padding: 0.5rem 3rem;
@@ -74,7 +74,7 @@
     background-color: #e0e0e0;
 }
 
-/* Responsive navbar-about */
+
 @media (max-width: 768px) {
     .navbar-about {
         flex-direction: column;
@@ -86,7 +86,7 @@
     }
 }
 
-/* Main Content */
+
 .main-content {
     display: flex;
     flex-direction: column;
@@ -164,7 +164,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Feature Section */
+
 .feature-section {
     display: flex;
     align-items: center;
@@ -196,9 +196,9 @@
 
 }
 
-/* Chỉnh màu background cho Công ty Toronto */
+
 .feature-section:nth-child(3).pink-bg {
-    background-color: #ffe1e6; /* Màu hồng đậm hơn để nổi bật */
+    background-color: #ffe1e6; 
 }
 
 .feature-text {
@@ -234,17 +234,17 @@
     transform: scale(1.02);
 }
 
-/* Chỉnh nút cho Công ty Toronto */
+
 .feature-section:nth-child(3) .cta-button.small {
-    background-color: #d32f2f; /* Màu đỏ nổi bật */
+    background-color: #d32f2f; 
     color: white;
 }
 
 .feature-section:nth-child(3) .cta-button.small:hover {
-    background-color: #b71c1c; /* Màu đỏ đậm hơn khi hover */
+    background-color: #b71c1c; 
 }
 
-/* Responsive feature section */
+
 @media (max-width: 768px) {
     .feature-section {
         flex-direction: column;
@@ -260,7 +260,7 @@
     font-size: 2rem;
 }
 
-/* News Section */
+
 .news-section {
     padding: 4rem 2rem;
     background: #f9fafa;
@@ -297,11 +297,11 @@
 
 .news-image {
     width: 100%;
-    height: 220px; /* Tăng chiều cao để tránh cắt ảnh */
+    height: 220px; 
     object-fit: cover;
 }
 
-/* Chỉnh nút trong news section */
+
 .logins-button{
     background: #fff;
     color: #0F9F3F;
@@ -396,13 +396,13 @@
     width: 100px;
     height: 100px;
     object-fit: cover;
-    object-position: top; /* Hiển thị phần trên của ảnh */
+    object-position: top; 
     border-radius: 50%;
     margin: 0 auto 1rem;
 }
 
 .contact-card:nth-child(2) .contact-avatar {
-    object-position: top; /* Đặc biệt cho Priva China */
+    object-position: top; 
 }
 
 .contact-card h3 {
@@ -431,12 +431,12 @@
     font-size: 1.25rem;
 }
 
-/* Footer */
+
 .footer {
     background: linear-gradient(135deg, #00401e, #0F9F3F);
     color: white;
     padding: 3rem 2rem;
-    margin-top: auto; /* Đẩy footer xuống cuối trang */
+    margin-top: auto; 
 }
 
 .footer-content {
@@ -448,12 +448,12 @@
 }
 .footer-logo {
     display: flex;
-    align-items: center; /* căn giữa theo chiều dọc */
-    gap: 10px; /* khoảng cách giữa logo và chữ */
+    align-items: center; 
+    gap: 10px;
   }
   
 .footer-logo img {
-    width: 50px; /* Giảm kích thước logo */
+    width: 50px; 
    
 }
 

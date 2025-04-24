@@ -21,13 +21,13 @@ export default function PrivateRoute({ children }) {
     }
   }, [token]);
 
-  if (!token) return <Navigate to="/login" />;
+  if (!token) return <Navigate to="/about" />;
 
   const decodedToken = decodeJWT(token);
   if (!decodedToken) {
     toast.error("Token không hợp lệ, vui lòng đăng nhập lại");
     localStorage.removeItem("token");
-    return <Navigate to="/login" />;
+    return <Navigate to="/about" />;
   }
 
   const timeUntilExpiry = decodedToken.exp - Date.now() / 1000;

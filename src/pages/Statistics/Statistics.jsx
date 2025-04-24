@@ -9,6 +9,9 @@ export default function Statistics() {
     const [temperature, setTemperature] = useState([])
     const [humidity, setHumidity] = useState([])
     const [soilMoisture, setSoilMoisture] = useState([])
+    const [temperNow, setTemperNow] = useState([])
+    const [humiNow, setHumiNow] = useState([])
+    const [soilMoisNow, setSoilMoiNow] = useState([])
    const [timeOut, setTimeOut] = useState(false)
     // const [thresholds,setThresholds] = useState(null)
    
@@ -35,7 +38,7 @@ useEffect(() => {
     const fetchData = async () => {
     
       try {
-        const thresholdsResponse = await getThresholds(token);
+        //const thresholdsResponse = await getThresholds(token);
         const temperatureResponse = await getTemperature();
         const humidityResponse = await getHumidity();
         const soilMoistureResponse = await getSoilMoisture();
@@ -44,7 +47,10 @@ useEffect(() => {
 				setTemperature(parseAndSort(temperatureResponse.data));
 				setHumidity(parseAndSort(humidityResponse.data));
 				setSoilMoisture(parseAndSort(soilMoistureResponse.data));
-        console.log("threshold",thresholdsResponse)
+        setTemperNow(temperatureResponse.data);
+				setHumiNow(humidityResponse.data);
+				setSoilMoiNow(soilMoistureResponse.data);
+       // console.log("threshold",thresholdsResponse)
         console.log("temperature",temperatureResponse.data)
         console.log("humidity",humidityResponse.data)
         console.log("soilMoisture",soilMoistureResponse.data)
@@ -248,7 +254,7 @@ yAxis: {
                         <img className='img-thresholds' src="https://static.vecteezy.com/system/resources/previews/019/860/394/non_2x/thermometer-icon-colorful-free-png.png" alt="temperature" />
                         <div className='show-information'>
                             <p >
-                                {Array.isArray(temperature) && temperature.length > 0 ? temperature[0].value : "Chưa có dữ liệu"}
+                                {Array.isArray(temperNow) && temperNow.length > 0 ? temperNow[0].value : "Chưa có dữ liệu"}
                             </p>
                         </div>
 
@@ -258,7 +264,7 @@ yAxis: {
                         <img className='img-thresholds' src="https://th.bing.com/th?q=Humidity+Icon+No+Background&w=120&h=120&c=1&rs=1&qlt=90&cb=1&dpr=1.3&pid=InlineBlock&mkt=en-WW&cc=VN&setlang=en&adlt=moderate&t=1&mw=247" alt="humidity" />
                         <div >
                             <p style={{ textAlign: "center" }}>
-                                {Array.isArray(humidity) && humidity.length > 0 ? humidity[0].value : "Chưa có dữ liệu"}
+                                {Array.isArray(humiNow) && humiNow.length > 0 ? humiNow[0].value : "Chưa có dữ liệu"}
                             </p>
                         </div>
                     </div>
@@ -267,7 +273,7 @@ yAxis: {
                         <img className='img-thresholds' src="https://th.bing.com/th/id/OIP.3O5_-oCR6oCXl90RmBjxigHaHa?w=212&h=211&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="soil moisture" />
                         <div >
                             <p style={{ textAlign: "center" }}>
-                                {Array.isArray(soilMoisture) && soilMoisture.length > 0 ? soilMoisture[0].value : "Chưa có dữ liệu"}
+                                {Array.isArray(soilMoisNow) && soilMoisNow.length > 0 ? soilMoisNow[0].value : "Chưa có dữ liệu"}
                             </p>
                         </div>
                     </div>
