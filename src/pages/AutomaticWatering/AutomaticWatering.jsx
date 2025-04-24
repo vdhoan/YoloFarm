@@ -4,7 +4,7 @@ import { FilterOutlined, DeleteOutlined, ScheduleOutlined, LineChartOutlined, Re
 import dayjs from "dayjs";
 
 
-import { deleteWatering, getStartTime, getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering, getIrrigationData } from "../../services/Api";
+import { deleteWatering, getStartTime, getEndtTime, getSoilMoisture, getWatering, postTimeEnd, postTimeStart, postWatering, getIrrigationData } from "../../services/Api";
 import "./AutomaticWatering.css";
 
 export default function AutomaticWatering() {
@@ -16,11 +16,12 @@ export default function AutomaticWatering() {
     const [nextEndTime, setNextEndTime] = useState(null);
     const [irrigationModalVisible, setIrrigationModalVisible] = useState(false);
     const [irrigationData, setIrrigationData] = useState(null);
+    const [soilMoisture, setSoilMoisture] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const updateNextWatering = async (schedules) => {
         const now = dayjs();
-    
+
         const futureTimes = schedules.flatMap(item =>
             item.wateringTimes?.startTimes.map((_, index) => ({
                 start: dayjs(item.wateringTimes.startTimes[index].date, 'YYYY-MM-DD HH:mm'),
@@ -28,14 +29,14 @@ export default function AutomaticWatering() {
             }))
         ).filter(time => time.end.isAfter(now));
         console.log("futureTimes in updateNextWatering", futureTimes);
-    
+
         if (futureTimes.length > 0) {
             const next = futureTimes.reduce((a, b) => a.start.isBefore(b.start) ? a : b);
             setNextStartTime(next.start);
             setNextEndTime(next.end);
-    
+
             const timeUntilEnd = next.end.diff(now, 'millisecond');
-            
+
             if (timeUntilEnd > 0) {
                 setTimeout(() => {
                     updateNextWatering(schedules);
@@ -45,10 +46,10 @@ export default function AutomaticWatering() {
             }
             const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             try {
-                    await delay(15000);
-                    await postTimeStart(next.start.format("D-M-YYYY-HH-mm"));
-                    await postTimeEnd(next.end.format("D-M-YYYY-HH-mm"));
-                
+                await delay(15000);
+                await postTimeStart(next.start.format("D-M-YYYY-HH-mm"));
+                await postTimeEnd(next.end.format("D-M-YYYY-HH-mm"));
+
                 // console.log("next start  ", next.start.format("D-M-YYYY-HH-mm"));
                 // console.log("next end time ", next.end.format("D-M-YYYY-HH-mm"));
             } catch (error) {
@@ -65,7 +66,7 @@ export default function AutomaticWatering() {
     };
 
 
-   
+
     const renderNextWatering = () => {
         if (!nextStartTime || !nextEndTime) {
             return <div className="next-watering-box">Không có lịch tưới sắp tới</div>;
@@ -100,6 +101,18 @@ export default function AutomaticWatering() {
     useEffect(() => {
         getData();
     }, [changeData]);
+    useEffect(() => {
+        const fetchSoilMoisture = async () => {
+            try {
+                const response = await getSoilMoisture()
+                console.log("du lieu do am dat",response.data)
+                setSoilMoisture(response.data)
+            } catch (error) {
+                console.error("lỗi lấy độ ẩm đất", error)
+            }
+        };
+        fetchSoilMoisture()
+    }, [])
 
     const handleDelete = async (autoId) => {
         try {
@@ -133,34 +146,34 @@ export default function AutomaticWatering() {
         try {
             const response = await postWatering(token, formPayload);
             console.log("response post watering create watering", response);
-        
+
             if (response.success) {
                 setChangeData(prev => !prev);
-        
+
                 if (!nextStartTime || newStart.isBefore(nextStartTime)) {
                     setNextStartTime(newStart);
                     setNextEndTime(newEnd);
                 }
-        
+
                 notification.success({
                     message: 'Thành công',
                     description: 'Cập nhật lịch tưới thành công!'
                 });
             } else {
-                
+
                 notification.error({
                     message: "Lỗi",
                     description: response.data?.error || "Lịch tưới không hợp lệ"
                 });
             }
         } catch (error) {
-           
+
             notification.error({
                 message: "Có lỗi xảy ra",
                 description: error?.response?.data?.error || "Lỗi không xác định"
             });
         }
-        
+
     };
 
     const columns = [
@@ -314,17 +327,17 @@ export default function AutomaticWatering() {
                     <div className='filter-watering'>
                         {/* <DatePicker placeholder='Chọn ngày' />
                         <DatePicker picker='month' placeholder='Chọn tháng' /> */}
-												
-                        <Button 
-                            type="primary" 
-                            icon={<ScheduleOutlined />} 
+
+                        <Button
+                            type="primary"
+                            icon={<ScheduleOutlined />}
                             onClick={fetchIrrigationData}
                             loading={loading}
-														style={{marginLeft: 10, marginRight: 10}}
+                            style={{ marginLeft: 10, marginRight: 10 }}
                         >
                             Quản lý tưới thông minh
                         </Button>
-                    
+
                         {/* <Button type='primary'>Tìm kiếm <FilterOutlined /></Button> */}
                     </div>
                     <Table
@@ -341,11 +354,11 @@ export default function AutomaticWatering() {
                 title={
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span>Quản lý tưới thông minh</span>
-                        <Button 
-                            type="primary" 
-                            icon={<ReloadOutlined />} 
-                            size="small" 
-                            loading={loading} 
+                        <Button
+                            type="primary"
+                            icon={<ReloadOutlined />}
+                            size="small"
+                            loading={loading}
                             onClick={fetchIrrigationData}
                         >
                             Cập nhật
@@ -361,7 +374,8 @@ export default function AutomaticWatering() {
                     <div>
                         <Card title="Thông tin hiện tại" style={{ marginBottom: 20 }}>
                             <Descriptions bordered>
-                                <Descriptions.Item label="Độ ẩm đất hiện tại" span={3}>{irrigationData.current_moisture}%</Descriptions.Item>
+                                <Descriptions.Item label="Độ ẩm đất hiện tại" span={3}>{soilMoisture[0].value}%</Descriptions.Item>
+                                {/* irrigationData.current_moisture */}
                                 <Descriptions.Item label="Ngày" span={3}>{dayjs().format('DD/MM/YYYY')}</Descriptions.Item>
                                 {irrigationData.prediction && (
                                     <>
@@ -395,10 +409,10 @@ export default function AutomaticWatering() {
                                                     <p><strong>Thời lượng tưới:</strong> {item.duration} phút</p>
                                                 )}
                                                 <Descriptions title="Điều kiện thời tiết" bordered>
-                                                    <Descriptions.Item label="Nhiệt độ">{item.weatherConditions.temperature}°C</Descriptions.Item>
-                                                    <Descriptions.Item label="Độ ẩm">{item.weatherConditions.humidity}%</Descriptions.Item>
-                                                    <Descriptions.Item label="Lượng mưa">{item.weatherConditions.precipitation} mm</Descriptions.Item>
-                                                    <Descriptions.Item label="Tốc độ gió">{item.weatherConditions.windSpeed} m/s</Descriptions.Item>
+                                                    <Descriptions.Item label="Nhiệt độ">{Math.round(item.weatherConditions.temperature * 100) / 100}°C</Descriptions.Item>
+                                                    <Descriptions.Item label="Độ ẩm">{Math.round(item.weatherConditions.humidity*100)/100}%</Descriptions.Item>
+                                                    <Descriptions.Item label="Lượng mưa">{Math.round(item.weatherConditions.precipitation*100)/100} mm</Descriptions.Item>
+                                                    <Descriptions.Item label="Tốc độ gió">{Math.round(item.weatherConditions.windSpeed*100)/100} m/s</Descriptions.Item>
                                                 </Descriptions>
                                             </Card>
                                         </List.Item>
