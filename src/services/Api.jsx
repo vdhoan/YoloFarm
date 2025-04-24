@@ -135,7 +135,7 @@ export const controlPump = async(status)=>{
 };
 export const postTimeStart = async (value) => {
     try {
-        console.log("trong ham postTimeStart", value)
+        //console.log("trong ham postTimeStart", value)
         const response = await adafruit.post('/time-start/data', 
             { value: value },
             {
@@ -146,14 +146,14 @@ export const postTimeStart = async (value) => {
             }
         );
 
-        console.log('Cập nhật thành công:', response.data);
+       // console.log('Cập nhật thành công:', response.data);
     } catch (error) {
         console.error('Lỗi khi cập nhật time-end:', error.response?.data || error.message);
     }
 };
 export const postTimeEnd = async (value) => {
     try {
-        console.log("trong ham postTimeend", value)
+      //  console.log("trong ham postTimeend", value)
         const response = await adafruit.post('/time-end/data', 
             { value: value },
             {
@@ -164,7 +164,7 @@ export const postTimeEnd = async (value) => {
             }
         );
 
-        console.log('Cập nhật thành công:', response.data);
+       // console.log('Cập nhật thành công:', response.data);
     } catch (error) {
         console.error('Lỗi khi cập nhật time-end:', error.response?.data || error.message);
     }

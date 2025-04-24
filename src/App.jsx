@@ -11,10 +11,11 @@ import Statistics from './pages/Statistics/Statistics'
 import Thresholds from './pages/Thresholds/Thresholds'
 import User from './pages/User/User'
 import Warning from './pages/Warning/Warning'
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from './PrivateRoute/PrivateRoute'
 // import GlobalWarningChecker from "../src/components/Notify/Notify.jsx";
+import AboutMe from './pages/AboutMe/AboutMe'
 
 import { useSensorMonitoring } from './services/Sensor';
 
@@ -25,6 +26,7 @@ function App() {
     return (
         <>
             <Routes>
+                <Route path='/about' element = {<AboutMe/>} />
                 <Route path="/login" element={<LoginBar />} />
                 <Route path="/" element={
                     <PrivateRoute >

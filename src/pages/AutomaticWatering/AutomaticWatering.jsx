@@ -36,12 +36,13 @@ export default function AutomaticWatering() {
             if (timeUntilEnd > 0) {
                 setTimeout(() => {
                     updateNextWatering(schedules);
-                }, timeUntilEnd+10000);
+                }, timeUntilEnd);
             } else {
                 updateNextWatering(schedules);
             }
-    
+            const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             try {
+                    await delay(15000);
                     await postTimeStart(next.start.format("D-M-YYYY-HH-mm"));
                     await postTimeEnd(next.end.format("D-M-YYYY-HH-mm"));
                 
@@ -127,33 +128,36 @@ export default function AutomaticWatering() {
         };
 
         try {
-            const response =await postWatering(token, formPayload);
-            setChangeData(prev => !prev);
-            console.log("response post watering create watering", response.status)
-
-            if (!nextStartTime || newStart.isBefore(nextStartTime)) {
-                setNextStartTime(newStart);
-                setNextEndTime(newEnd);
-            }
-            if(response.success){
+            const response = await postWatering(token, formPayload);
+            console.log("response post watering create watering", response);
+        
+            if (response.success) {
+                setChangeData(prev => !prev);
+        
+                if (!nextStartTime || newStart.isBefore(nextStartTime)) {
+                    setNextStartTime(newStart);
+                    setNextEndTime(newEnd);
+                }
+        
                 notification.success({
                     message: 'Thành công',
                     description: 'Cập nhật lịch tưới thành công!'
                 });
-            }
-            if(response.status !== 200){
+            } else {
+                
                 notification.error({
-                    message:"Lỗi",
-                    description: response.data.error || "Lịch tưới không hợp lệ"
-                })
+                    message: "Lỗi",
+                    description: response.data?.error || "Lịch tưới không hợp lệ"
+                });
             }
-            
         } catch (error) {
+           
             notification.error({
                 message: "Có lỗi xảy ra",
                 description: error?.response?.data?.error || "Lỗi không xác định"
             });
         }
+        
     };
 
     const columns = [

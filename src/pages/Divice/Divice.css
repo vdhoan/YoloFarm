@@ -1,53 +1,69 @@
-
 .device-container {
     width: 100%;
+    padding: 2rem;
+    background-color: #f3f4f6;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .device-title {
     text-align: center;
-    padding: 10px;
-    margin: 40px;
-    color: black;
-    font-weight: bold;
-    font-size: 2.25rem; 
+    margin-bottom: 2rem;
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: 0.05rem;
 }
 
 .device-table {
-    width: 96%;
-    margin: 1.5rem;
-    border-collapse: collapse;
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .device-table thead {
-    background-color: #f9fafb;
-    border-bottom: 2px solid #e5e7eb; 
-}
-.device-table tbody {
-   background-color: #fff;
+    background-color: #e5e7eb;
 }
 
 .device-table th {
-    padding: 0.75rem;
+    padding: 1rem;
     text-align: center;
-    font-size: 1.125rem; 
+    font-size: 1.1rem;
     font-weight: 600;
-    letter-spacing: 0.025em;
+    color: #111827;
+    border-bottom: 1px solid #d1d5db;
 }
 
 .device-table td {
-    padding: 0.75rem;
+    padding: 1rem;
     text-align: center;
     font-size: 1rem;
     font-weight: 500;
-    color: #374151; 
-    border-bottom: 1px solid #d1d5db; 
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.device-table tr:hover {
-    background-color: #eef0f2; 
+.device-table tr:last-child td {
+    border-bottom: none;
+}
+
+.device-table tbody tr:hover {
+    background-color: #f0f9ff;
+    transition: background-color 0.3s ease;
 }
 
 .edit-icon {
     cursor: pointer;
-    color: blue;
+    color: #2563eb;
+    transition: color 0.3s ease;
+}
+
+.edit-icon:hover {
+    color: #1d4ed8;
 }

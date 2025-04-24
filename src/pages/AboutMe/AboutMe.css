@@ -1,0 +1,524 @@
+/* General styles */
+.partner-page {
+    min-height: 100vh;
+    background-color: #e6f0e9;
+    color: #1a3c34;
+    font-family: 'Roboto', sans-serif; /* Đổi sang Roboto */
+    display: flex;
+    flex-direction: column;
+}
+
+/* navbar-about */
+.navbar-about {
+    background: linear-gradient(135deg, #0F9F3F, #2ecc71);
+    padding: 0.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 99vw;
+    position: fixed;
+   
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-login {
+    width: 50px;
+    height: auto;
+}
+
+.name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+.right-about{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+}
+.link-about {
+    color: white;
+    text-decoration: none;
+    font-size: 1.125rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+   
+}
+
+.link-about:hover {
+    color: #f0f0f0;
+    text-decoration: underline;
+}
+
+.cta-button.small {
+    background-color: #ffffff;
+    color: #0F9F3F;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button.small:hover {
+    background-color: #e0e0e0;
+}
+
+/* Responsive navbar-about */
+@media (max-width: 768px) {
+    .navbar-about {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .navbar-about a {
+        font-size: 1rem;
+    }
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 12rem 2rem 5rem 2rem;
+    /* padding-top: 10rem; */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .main-content {
+        flex-direction: row;
+        align-items: center;
+        gap: 4rem;
+        padding: 10rem 3rem 7rem 3rem;
+    }
+}
+
+.text-section {
+    flex: 1;
+}
+
+.text-section h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #1a3c34;
+}
+
+@media (min-width: 768px) {
+    .text-section h1 {
+        font-size: 3.5rem;
+    }
+}
+
+.highlight {
+    color: #0F9F3F;
+    font-weight: 900;
+}
+
+.text-section p {
+    margin-top: 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #4a4a4a;
+}
+
+.cta-button {
+    margin-top: 2rem;
+    background: linear-gradient(135deg, #0F9F3F, #2ecc71);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.cta-button:hover {
+    background: linear-gradient(135deg, #2ecc71, #0F9F3F);
+    transform: scale(1.05);
+}
+
+.image-section {
+    flex: 1;
+}
+
+.image {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Feature Section */
+.feature-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 3rem auto;
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 1200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-section.reverse {
+    flex-direction: row-reverse;
+}
+
+.green-bg {
+    background-color: #4c7c3a;
+    color: white;
+}
+
+.pink-bg {
+    background-color: #f8d7dd;
+    color: #1a3c34;
+}
+
+.blue-bg{
+    background-color: #4b7a80;
+    color: #fff;
+
+}
+
+/* Chỉnh màu background cho Công ty Toronto */
+.feature-section:nth-child(3).pink-bg {
+    background-color: #ffe1e6; /* Màu hồng đậm hơn để nổi bật */
+}
+
+.feature-text {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.feature-text h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.feature-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.feature-image {
+    flex: 1;
+}
+
+.feature-image img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.feature-image img:hover {
+    transform: scale(1.02);
+}
+
+/* Chỉnh nút cho Công ty Toronto */
+.feature-section:nth-child(3) .cta-button.small {
+    background-color: #d32f2f; /* Màu đỏ nổi bật */
+    color: white;
+}
+
+.feature-section:nth-child(3) .cta-button.small:hover {
+    background-color: #b71c1c; /* Màu đỏ đậm hơn khi hover */
+}
+
+/* Responsive feature section */
+@media (max-width: 768px) {
+    .feature-section {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .feature-section.reverse {
+        flex-direction: column;
+    }
+}
+
+.customer{
+    text-align: center;
+    font-size: 2rem;
+}
+
+/* News Section */
+.news-section {
+    padding: 4rem 2rem;
+    background: #f9fafa;
+    text-align: center;
+}
+
+.news-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a3c34;
+    margin-bottom: 2rem;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.news-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.news-image {
+    width: 100%;
+    height: 220px; /* Tăng chiều cao để tránh cắt ảnh */
+    object-fit: cover;
+}
+
+/* Chỉnh nút trong news section */
+.logins-button{
+    background: #fff;
+    color: #0F9F3F;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+.logins-button a:hover {
+    background: #a7aaa8;
+    text-decoration: none;
+}
+.news-button {
+    background: #0F9F3F;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.news-button:hover {
+    background: #2ecc71;
+}
+
+.news-content {
+    padding: 1.5rem;
+}
+
+.news-headline {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a3c34;
+    margin-bottom: 0.5rem;
+}
+
+.news-desc {
+    font-size: 0.95rem;
+    color: #4a4a4a;
+    margin-bottom: 1rem;
+}
+
+/* Contact Section */
+.contact-wrapper {
+    padding: 5rem 2rem;
+    background: #ffffff;
+    text-align: center;
+}
+
+.contact-header {
+    margin-bottom: 3rem;
+}
+
+.contact-subtitle {
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #0F9F3F;
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+}
+
+.contact-header h2 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #1a3c34;
+    margin-top: 0.5rem;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact-card {
+    background: #f9fafa;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+}
+
+.contact-avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    object-position: top; /* Hiển thị phần trên của ảnh */
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+}
+
+.contact-card:nth-child(2) .contact-avatar {
+    object-position: top; /* Đặc biệt cho Priva China */
+}
+
+.contact-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a3c34;
+    margin-bottom: 1rem;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #1a3c34;
+}
+
+.contact-icon {
+    color: #0F9F3F;
+    font-size: 1.25rem;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #00401e, #0F9F3F);
+    color: white;
+    padding: 3rem 2rem;
+    margin-top: auto; /* Đẩy footer xuống cuối trang */
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+.footer-logo {
+    display: flex;
+    align-items: center; /* căn giữa theo chiều dọc */
+    gap: 10px; /* khoảng cách giữa logo và chữ */
+  }
+  
+.footer-logo img {
+    width: 50px; /* Giảm kích thước logo */
+   
+}
+
+.footer-column h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li:hover {
+    color: #f0f0f0;
+}
+
+.footer-column p {
+    margin-bottom: 0.5rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #f0f0f0;
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.5rem;
+}
+
+.footer-social > * {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.footer-social > *:hover {
+    color: #f0f0f0;
+}
