@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Form, Button, Input, Popconfirm, Table, DatePicker, TimePicker, notification } from "antd";
-import { FilterOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Form, Button, Input, Popconfirm, Table, DatePicker, TimePicker, notification, Modal, Card, List, Descriptions } from "antd";
+import { FilterOutlined, DeleteOutlined, ScheduleOutlined, LineChartOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 
 
-import { deleteWatering, getStartTime, getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering } from "../../services/Api";
+import { deleteWatering, getStartTime, getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering, getIrrigationData } from "../../services/Api";
 import "./AutomaticWatering.css";
 
 export default function AutomaticWatering() {
@@ -14,6 +14,9 @@ export default function AutomaticWatering() {
     const [changeData, setChangeData] = useState(false);
     const [nextStartTime, setNextStartTime] = useState(null);
     const [nextEndTime, setNextEndTime] = useState(null);
+    const [irrigationModalVisible, setIrrigationModalVisible] = useState(false);
+    const [irrigationData, setIrrigationData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const updateNextWatering = async (schedules) => {
         const now = dayjs();
@@ -215,11 +218,28 @@ export default function AutomaticWatering() {
 
     const formattedData = data.map(item => ({ ...item, key: item.autoId }));
 
+    const fetchIrrigationData = async () => {
+        setLoading(true);
+        try {
+            const response = await getIrrigationData(token);
+            setIrrigationData(response.data);
+            setIrrigationModalVisible(true);
+        } catch (error) {
+            notification.error({
+                message: "Lỗi",
+                description: "Không thể tải dữ liệu tưới"
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="all-watering">
             <div className="watering">
                 <div className='filter-watering'>
                     {renderNextWatering()}
+
                 </div>
                 <div className="watering-form">
                     <div className="watering-titile">
@@ -294,6 +314,17 @@ export default function AutomaticWatering() {
                     <div className='filter-watering'>
                         <DatePicker placeholder='Chọn ngày' />
                         <DatePicker picker='month' placeholder='Chọn tháng' />
+												
+                        <Button 
+                            type="primary" 
+                            icon={<ScheduleOutlined />} 
+                            onClick={fetchIrrigationData}
+                            loading={loading}
+														style={{marginLeft: 10, marginRight: 10}}
+                        >
+                            Quản lý tưới thông minh
+                        </Button>
+                    
                         <Button type='primary'>Tìm kiếm <FilterOutlined /></Button>
                     </div>
                     <Table
@@ -304,6 +335,80 @@ export default function AutomaticWatering() {
                     />
                 </div>
             </div>
+
+            {/* Irrigation Modal */}
+            <Modal
+                title={
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span>Quản lý tưới thông minh</span>
+                        <Button 
+                            type="primary" 
+                            icon={<ReloadOutlined />} 
+                            size="small" 
+                            loading={loading} 
+                            onClick={fetchIrrigationData}
+                        >
+                            Cập nhật
+                        </Button>
+                    </div>
+                }
+                open={irrigationModalVisible}
+                onCancel={() => setIrrigationModalVisible(false)}
+                footer={null}
+                width={800}
+            >
+                {irrigationData && (
+                    <div>
+                        <Card title="Thông tin hiện tại" style={{ marginBottom: 20 }}>
+                            <Descriptions bordered>
+                                <Descriptions.Item label="Độ ẩm đất hiện tại" span={3}>{irrigationData.current_moisture}%</Descriptions.Item>
+                                <Descriptions.Item label="Ngày" span={3}>{dayjs().format('DD/MM/YYYY')}</Descriptions.Item>
+                                {irrigationData.prediction && (
+                                    <>
+                                        <Descriptions.Item label="Nên tưới hôm nay" span={3}>
+                                            {irrigationData.prediction.should_water ? 'Có' : 'Không'}
+                                        </Descriptions.Item>
+                                        {irrigationData.prediction.should_water && (
+                                            <>
+                                                <Descriptions.Item label="Thời lượng đề xuất" span={2}>
+                                                    {irrigationData.prediction.recommended_duration} phút
+                                                </Descriptions.Item>
+                                                <Descriptions.Item label="Thời gian bắt đầu">
+                                                    {irrigationData.prediction.recommended_start_time}
+                                                </Descriptions.Item>
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </Descriptions>
+                        </Card>
+
+                        {irrigationData.schedule && (
+                            <Card title="Lịch tưới dự kiến" style={{ marginBottom: 20 }}>
+                                <List
+                                    dataSource={irrigationData.schedule}
+                                    renderItem={(item) => (
+                                        <List.Item>
+                                            <Card title={`Ngày ${dayjs(item.date).format('DD/MM/YYYY')}`} style={{ width: '100%' }}>
+                                                <p><strong>{item.shouldWater ? 'Nên tưới' : 'Không cần tưới'}</strong></p>
+                                                {item.shouldWater && (
+                                                    <p><strong>Thời lượng tưới:</strong> {item.duration} phút</p>
+                                                )}
+                                                <Descriptions title="Điều kiện thời tiết" bordered>
+                                                    <Descriptions.Item label="Nhiệt độ">{item.weatherConditions.temperature}°C</Descriptions.Item>
+                                                    <Descriptions.Item label="Độ ẩm">{item.weatherConditions.humidity}%</Descriptions.Item>
+                                                    <Descriptions.Item label="Lượng mưa">{item.weatherConditions.precipitation} mm</Descriptions.Item>
+                                                    <Descriptions.Item label="Tốc độ gió">{item.weatherConditions.windSpeed} m/s</Descriptions.Item>
+                                                </Descriptions>
+                                            </Card>
+                                        </List.Item>
+                                    )}
+                                />
+                            </Card>
+                        )}
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 }

@@ -20,7 +20,18 @@ export default function Statistics() {
     return () => clearInterval(interval);
   }, []);
 
+	const parseAndSort = (data) => {
+		return data
+			.map(item => ({
+				...item,
+				value: Number(item.value), 
+				created_at: new Date(item.created_at), 
+			}))
+			.sort((a, b) => a.created_at - b.created_at); 
+	};
+
 useEffect(() => {
+
     const fetchData = async () => {
     
       try {
@@ -30,13 +41,15 @@ useEffect(() => {
         const soilMoistureResponse = await getSoilMoisture();
   
         //setThresholds(thresholdsResponse);
-        setTemperature(temperatureResponse.data);
-        setHumidity(humidityResponse.data);
-        setSoilMoisture(soilMoistureResponse.data);
+				setTemperature(parseAndSort(temperatureResponse.data));
+				setHumidity(parseAndSort(humidityResponse.data));
+				setSoilMoisture(parseAndSort(soilMoistureResponse.data));
         console.log("threshold",thresholdsResponse)
         console.log("temperature",temperatureResponse.data)
         console.log("humidity",humidityResponse.data)
         console.log("soilMoisture",soilMoistureResponse.data)
+
+
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu:", error);
       } 
@@ -133,7 +146,7 @@ useEffect(() => {
         data: temperature,
         xField: 'created_at',
         yField: 'value',
-       
+				shape: 'smooth',
         colorField: 'red',
         style: {
             lineWidth: 2,
@@ -142,20 +155,68 @@ useEffect(() => {
             x: {
               values: [0.1, 0.2],
             },
-          },
-          
+          },     
     };
 
     const configHumidity = {
         data: humidity,
         xField: 'created_at',
         yField: 'value',
-        smooth: true,
-        colorField: '#29899af8',
+        shape: 'smooth',
+        color: '#29899af8',
+				style: {
+					fill: 'linear-gradient(-90deg, white 0%, lightblue 100%)',
+				},
+				line: {
+					shape: 'smooth',
+					style: {
+						stroke: '#2596be',
+						strokeWidth: 3,
+					},
+				},
+		point: {
+			size: 5,
+			shape: 'circle',
+			style: {
+					fill: 'white',
+					stroke: '#29899af8',
+					lineWidth: 2,
+			},
+	},
+	xAxis: {
+		tickCount: 5,
+		grid: {
+				line: {
+						style: {
+								stroke: '#eee',
+								lineWidth: 1,
+								lineDash: [4, 4],
+						},
+				},
+		},
+},
+
+yAxis: {
+		label: {
+				formatter: (v) => `${v}%`,
+		},
+		min: 30,
+		max: 70,
+		range: [0, 1],
+		nice: true,
+		grid: {
+				line: {
+						style: {
+								stroke: '#eee',
+						},
+				},
+		},
+},
+
         slider: {
             x: {
               values: [0.1, 0.2],
-            },
+            }
           },
     };
 
@@ -164,7 +225,8 @@ useEffect(() => {
         xField: 'created_at',
         yField: 'value',
         colorField: 'brown',
-        smooth: true,
+        shape: 'smooth',
+				
         slider: {
             x: {
               values: [0.1, 0.2],
@@ -173,6 +235,8 @@ useEffect(() => {
           style: {
             lineWidth: 2,
           },
+					
+					
     };
     return (
         <div className="wrapper-statistics">
@@ -217,7 +281,8 @@ useEffect(() => {
                 </div>
                 <div className='item-chart'>
                     <h2 className="title-chart">Biểu đồ độ ẩm không khí</h2>
-                    <Area {...configHumidity} />
+                    <Line {...configHumidity}
+									 />
                 </div>
                 <div className='item-chart'>
                     <h2 className="title-chart">Biểu đồ độ ẩm đất</h2>

@@ -219,4 +219,13 @@ export const logout = (token)=>{
     return response
 }
 
+export const getIrrigationData = async (token) => {
+    const response = await instance.get("/api/irrigation/test-schedule", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return response;
+};
+
 

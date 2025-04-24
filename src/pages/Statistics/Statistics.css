@@ -2,30 +2,31 @@
     margin-top: 2vh;
 } */
 
-.statistics h2{
-    text-align: center;
-    margin-bottom: 3vh;
-    margin-top: 3vh;
+.statistics h2 {
+	text-align: center;
+	margin-bottom: 3vh;
+	margin-top: 3vh;
 }
 
-.show-information p{
-    text-align: center;
-}
-.chart{
-    display:flex;
-    justify-content: center;
+.show-information p {
+	text-align: center;
 }
 
-.item-chart{
-    margin-left: 5vw;
-    margin-right: 5vw;
-    background-color: #fff;
-    border-radius: 10px;
-    margin-bottom: 5vh;
+.chart {
+	display: flex;
+	justify-content: center;
 }
 
-.title-chart{
-    text-align: center;
-    /* padding-bottom: 2vh; */
-    padding-top: 2vh;
+.item-chart {
+	margin-left: 5vw;
+	margin-right: 5vw;
+	background-color: #fff;
+	border-radius: 10px;
+	margin-bottom: 5vh;
+}
+
+.title-chart {
+	text-align: center;
+	/* padding-bottom: 2vh; */
+	padding-top: 2vh;
 }
