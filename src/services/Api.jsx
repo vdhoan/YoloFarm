@@ -219,17 +219,8 @@ export const logout = (token)=>{
     return response
 }
 
-export const getIrrigationSchedule = async (token) => {
-    const response = await instance.get("/api/irrigation/schedule", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response;
-};
-
-export const getIrrigationPrediction = async (token) => {
-    const response = await instance.get("/api/irrigation/prediction", {
+export const getIrrigationData = async (token) => {
+    const response = await instance.get("/api/irrigation/test-schedule", {
         headers: {
             Authorization: `Bearer ${token}`
         }
