@@ -312,8 +312,8 @@ export default function AutomaticWatering() {
                 <div className='table-watering'>
                     <h2>LỊCH SỬ TẠO TƯỚI NƯỚC TỰ ĐỘNG</h2>
                     <div className='filter-watering'>
-                        <DatePicker placeholder='Chọn ngày' />
-                        <DatePicker picker='month' placeholder='Chọn tháng' />
+                        {/* <DatePicker placeholder='Chọn ngày' />
+                        <DatePicker picker='month' placeholder='Chọn tháng' /> */}
 												
                         <Button 
                             type="primary" 
@@ -325,7 +325,7 @@ export default function AutomaticWatering() {
                             Quản lý tưới thông minh
                         </Button>
                     
-                        <Button type='primary'>Tìm kiếm <FilterOutlined /></Button>
+                        {/* <Button type='primary'>Tìm kiếm <FilterOutlined /></Button> */}
                     </div>
                     <Table
                         columns={columns}

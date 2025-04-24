@@ -6,7 +6,7 @@ import pump from '../../assets/image15.png';
 import schedule from '../../assets/image16.png';
 import { controlPump, getStatusPump } from '../../services/Api';
 import './Pump.css';
-
+import dayjs from 'dayjs';
 
 const columns = [
     {
@@ -25,7 +25,7 @@ const columns = [
         title: 'Trạng thái',
         dataIndex: 'value',
         key: 'value',
-        render: (value) => (value === "1" ? "Đang bơm" : "Đã tắt"),
+        render: (value) => (value === '1' ? 'Đang bơm' : 'Đã tắt'),
     },
 ];
 
@@ -33,21 +33,31 @@ export default function PumpAndHistory() {
     const token = localStorage.getItem('token');
     const [isOn, setIsOn] = useState(false);
     const [pumpStatus, setPumpStatus] = useState([]);
+    const [filteredStatus, setFilteredStatus] = useState([]); 
+    const [selectedDate, setSelectedDate] = useState(null); 
+    const [selectedMonth, setSelectedMonth] = useState(null); 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await getStatusPump(token);
+    
+    const fetchPumpStatus = async () => {
+        try {
+            const res = await getStatusPump(token);
+            setPumpStatus(res.data);
+            setFilteredStatus(res.data); 
+            if (res.data.length > 0) {
                 setIsOn(Boolean(Number(res.data[0]?.value)));
-                setPumpStatus(res.data);
-            } catch (error) {
-                console.error('Lỗi khi lấy dữ liệu máy bơm:', error);
             }
-        };
-        fetchData();
-    }, [isOn,token]);
+        } catch (error) {
+            console.error('Lỗi khi lấy dữ liệu máy bơm:', error);
+            notification.error({ description: 'Lỗi khi lấy dữ liệu máy bơm!' });
+        }
+    };
 
-    // Handle pump control
+   
+    useEffect(() => {
+        fetchPumpStatus();
+    }, [isOn, token]);
+
+    
     const handleChangePump = async () => {
         const newStatus = !isOn;
         try {
@@ -60,6 +70,44 @@ export default function PumpAndHistory() {
             console.error('Lỗi điều khiển máy bơm:', error);
             notification.error({ description: 'Đã xảy ra lỗi khi điều khiển máy bơm!' });
         }
+    };
+
+   
+    const handleSearch = () => {
+        if (!selectedDate && !selectedMonth) {
+            setFilteredStatus(pumpStatus); 
+            return;
+        }
+
+        const filteredData = pumpStatus.filter((item) => {
+            const itemDate = dayjs(item.created_at);
+            const matchDate = selectedDate
+                ? itemDate.isSame(dayjs(selectedDate), 'day')
+                : true;
+            const matchMonth = selectedMonth
+                ? itemDate.isSame(dayjs(selectedMonth), 'month')
+                : true;
+            return matchDate && matchMonth;
+        });
+
+        setFilteredStatus(filteredData); 
+    };
+
+    
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+
+    
+    const handleMonthChange = (month) => {
+        setSelectedMonth(month);
+    };
+
+   
+    const handleClearFilter = () => {
+        setSelectedDate(null);
+        setSelectedMonth(null);
+        setFilteredStatus(pumpStatus); 
     };
 
     return (
@@ -89,15 +137,27 @@ export default function PumpAndHistory() {
             <div className="right-side">
                 <h2 className="history-title">LỊCH SỬ BƠM NƯỚC</h2>
                 <div className="filter-history">
-                    <DatePicker placeholder="Chọn ngày" />
-                    <DatePicker picker="month" placeholder="Chọn tháng" />
-                    <Button type="primary">
+                    <DatePicker
+                        placeholder="Chọn ngày"
+                        onChange={handleDateChange}
+                        value={selectedDate}
+                        format="DD/MM/YYYY"
+                    />
+                    <DatePicker
+                        picker="month"
+                        placeholder="Chọn tháng"
+                        onChange={handleMonthChange}
+                        value={selectedMonth}
+                        format="MM/YYYY"
+                    />
+                    <Button type="primary" onClick={handleSearch}>
                         Tìm kiếm <FilterOutlined />
                     </Button>
+                    <Button onClick={handleClearFilter}>Xóa bộ lọc</Button>
                 </div>
                 <Table
                     columns={columns}
-                    dataSource={pumpStatus}
+                    dataSource={filteredStatus} 
                     pagination={{
                         pageSize: 8,
                         showSizeChanger: false,

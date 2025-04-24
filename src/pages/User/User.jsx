@@ -43,9 +43,9 @@ export default function UserProfileCard() {
         width: 800,
         mx: "auto",
         borderRadius: 3,
-        mt: 3,
+        
         backgroundColor: "#fff",
-        marginTop: "30px",
+        marginTop: "70px",
       }}
     >
       <Typography variant="h6" fontWeight="bold" gutterBottom>
@@ -54,11 +54,11 @@ export default function UserProfileCard() {
 
       <Box textAlign="center" mb={3}>
         <Avatar sx={{ width: 80, height: 80, mx: "auto" }} />
-        <Typography mt={1} fontWeight="bold">
+        <Typography mt={1} mb={4} fontWeight="bold">
           {userData?.name}
         </Typography>
 
-        <Box mt={1} display="flex" justifyContent="center" gap={2}>
+        {/* <Box mt={1} display="flex" justifyContent="center" gap={2}>
           <IconButton>
             <EditIcon fontSize="small" />
             <Typography fontSize={14} ml={0.5}>
@@ -71,7 +71,7 @@ export default function UserProfileCard() {
               Đổi mật khẩu
             </Typography>
           </IconButton>
-        </Box>
+        </Box> */}
       </Box>
 
       <Grid

@@ -8,9 +8,10 @@ import { useNotification } from "../../components/Context/WarningContext";
 
 export default function Warning() {
   const { newWarningTrigger } = useNotification();
-  const [data, setData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [data, setData] = useState([]); 
+  const [filteredData, setFilteredData] = useState([]); 
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null); 
   const token = localStorage.getItem("token");
 
   const columns = [
@@ -43,28 +44,65 @@ export default function Warning() {
     },
   ];
 
+  
   const fetchData = async () => {
     try {
-      const params = {};
-      if (selectedDate) {
-        params.date = dayjs(selectedDate).format('YYYY-MM-DD');
-      }
-      if (selectedMonth) {
-        params.month = dayjs(selectedMonth).format('YYYY-MM');
-      }
-      const response = await getWarning(token, params); 
+      const response = await getWarning(token);
       setData(response.data);
+      setFilteredData(response.data); 
     } catch (error) {
       console.error('Lỗi khi lấy dữ liệu cảnh báo:', error);
     }
   };
 
+  
   useEffect(() => {
     fetchData();
-  }, [token, newWarningTrigger, selectedDate, selectedMonth]);
+  }, [token, newWarningTrigger]);
 
+ 
   const handleSearch = () => {
-    fetchData();
+    if (!startDate && !endDate) {
+      setFilteredData(data); 
+      return;
+    }
+
+    const filtered = data.filter((item) => {
+      const itemDate = dayjs(item.timestamp);
+      const start = startDate ? dayjs(startDate).startOf('day') : null;
+      const end = endDate ? dayjs(endDate).endOf('day') : null;
+
+     
+      if (start && end) {
+        return itemDate.isAfter(start) && itemDate.isBefore(end);
+      }
+      if (start) {
+        return itemDate.isSame(start, 'day') || itemDate.isAfter(start);
+      }
+      if (end) {
+        return itemDate.isSame(end, 'day') || itemDate.isBefore(end);
+      }
+      return true;
+    });
+
+    setFilteredData(filtered); 
+  };
+
+  
+  const handleClearFilter = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setFilteredData(data); 
+  };
+
+ 
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
   };
 
   return (
@@ -72,23 +110,27 @@ export default function Warning() {
       <div className='history-watering'>
         <div className='filter-watering'>
           <DatePicker
-            placeholder='Chọn ngày'
-            onChange={(date) => setSelectedDate(date)}
+            placeholder='Chọn ngày bắt đầu'
+            onChange={handleStartDateChange}
+            value={startDate}
+            format="DD/MM/YYYY"
           />
           <DatePicker
-            picker='month'
-            placeholder='Chọn tháng'
-            onChange={(date) => setSelectedMonth(date)}
+            placeholder='Chọn ngày kết thúc'
+            onChange={handleEndDateChange}
+            value={endDate}
+            format="DD/MM/YYYY"
           />
           <Button type='primary' onClick={handleSearch}>
             Tìm kiếm <FilterOutlined />
           </Button>
+          <Button onClick={handleClearFilter}>Xóa bộ lọc</Button>
         </div>
         <div className='table-watering'>
           <h2>LỊCH SỬ CẢNH BÁO</h2>
           <Table
             columns={columns}
-            dataSource={data.map((item, index) => ({ ...item, key: index }))}
+            dataSource={filteredData.map((item, index) => ({ ...item, key: index }))}
             pagination={{
               pageSize: 10,
               showSizeChanger: false,
