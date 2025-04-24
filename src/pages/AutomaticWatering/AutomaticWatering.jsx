@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Form, Button, Input, Popconfirm, Table, DatePicker, TimePicker, notification, Modal, Card, List, Descriptions } from "antd";
-import { FilterOutlined, DeleteOutlined, ScheduleOutlined, LineChartOutlined } from '@ant-design/icons';
+import { FilterOutlined, DeleteOutlined, ScheduleOutlined, LineChartOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 
 
-import { deleteWatering, getStartTime, getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering, getIrrigationSchedule, getIrrigationPrediction } from "../../services/Api";
+import { deleteWatering, getStartTime, getEndtTime, getWatering, postTimeEnd, postTimeStart, postWatering, getIrrigationData } from "../../services/Api";
 import "./AutomaticWatering.css";
 
 export default function AutomaticWatering() {
@@ -14,10 +14,8 @@ export default function AutomaticWatering() {
     const [changeData, setChangeData] = useState(false);
     const [nextStartTime, setNextStartTime] = useState(null);
     const [nextEndTime, setNextEndTime] = useState(null);
-    const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-    const [predictionModalVisible, setPredictionModalVisible] = useState(false);
-    const [scheduleData, setScheduleData] = useState(null);
-    const [predictionData, setPredictionData] = useState(null);
+    const [irrigationModalVisible, setIrrigationModalVisible] = useState(false);
+    const [irrigationData, setIrrigationData] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const updateNextWatering = async (schedules) => {
@@ -216,32 +214,16 @@ export default function AutomaticWatering() {
 
     const formattedData = data.map(item => ({ ...item, key: item.autoId }));
 
-    const fetchIrrigationSchedule = async () => {
+    const fetchIrrigationData = async () => {
         setLoading(true);
         try {
-            const response = await getIrrigationSchedule(token);
-            setScheduleData(response.data);
-            setScheduleModalVisible(true);
+            const response = await getIrrigationData(token);
+            setIrrigationData(response.data);
+            setIrrigationModalVisible(true);
         } catch (error) {
             notification.error({
                 message: "Lỗi",
-                description: "Không thể tải dữ liệu lịch tưới dự kiến"
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchIrrigationPrediction = async () => {
-        setLoading(true);
-        try {
-            const response = await getIrrigationPrediction(token);
-            setPredictionData(response.data);
-            setPredictionModalVisible(true);
-        } catch (error) {
-            notification.error({
-                message: "Lỗi",
-                description: "Không thể tải dữ liệu dự đoán tưới"
+                description: "Không thể tải dữ liệu tưới"
             });
         } finally {
             setLoading(false);
@@ -332,20 +314,11 @@ export default function AutomaticWatering() {
                         <Button 
                             type="primary" 
                             icon={<ScheduleOutlined />} 
-                            onClick={fetchIrrigationSchedule}
+                            onClick={fetchIrrigationData}
                             loading={loading}
-                            style={{ marginRight: '10px', marginLeft: '10px' }}
+														style={{marginLeft: 10, marginRight: 10}}
                         >
-                            Lịch tưới dự kiến
-                        </Button>
-                        <Button 
-                            type="primary" 
-                            icon={<LineChartOutlined />} 
-                            onClick={fetchIrrigationPrediction}
-                            loading={loading}
-														style={{ marginRight: '10px' }}
-                        >
-                            Dự đoán ngày hôm nay
+                            Quản lý tưới thông minh
                         </Button>
                     
                         <Button type='primary'>Tìm kiếm <FilterOutlined /></Button>
@@ -359,70 +332,76 @@ export default function AutomaticWatering() {
                 </div>
             </div>
 
-            {/* Schedule Modal */}
+            {/* Irrigation Modal */}
             <Modal
-                title="Lịch tưới dự kiến"
-                open={scheduleModalVisible}
-                onCancel={() => setScheduleModalVisible(false)}
+                title={
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span>Quản lý tưới thông minh</span>
+                        <Button 
+                            type="primary" 
+                            icon={<ReloadOutlined />} 
+                            size="small" 
+                            loading={loading} 
+                            onClick={fetchIrrigationData}
+                        >
+                            Cập nhật
+                        </Button>
+                    </div>
+                }
+                open={irrigationModalVisible}
+                onCancel={() => setIrrigationModalVisible(false)}
                 footer={null}
                 width={800}
             >
-                {scheduleData && (
+                {irrigationData && (
                     <div>
-                        <p><strong>Độ ẩm đất hiện tại:</strong> {scheduleData.current_moisture}%</p>
-                        <List
-                            dataSource={scheduleData.schedule}
-                            renderItem={(item) => (
-                                <List.Item>
-                                    <Card title={`Ngày ${dayjs(item.date).format('DD/MM/YYYY')}`} style={{ width: '100%' }}>
-                                        <p><strong>{item.shouldWater ? 'Nên tưới' : 'Không cần tưới'}</strong></p>
-                                        {item.shouldWater && (
-                                            <p><strong>Thời lượng tưới:</strong> {item.duration} phút</p>
-                                        )}
-                                        <Descriptions title="Điều kiện thời tiết" bordered>
-                                            <Descriptions.Item label="Nhiệt độ">{item.weatherConditions.temperature}°C</Descriptions.Item>
-                                            <Descriptions.Item label="Độ ẩm">{item.weatherConditions.humidity}%</Descriptions.Item>
-                                            <Descriptions.Item label="Lượng mưa">{item.weatherConditions.precipitation} mm</Descriptions.Item>
-                                            <Descriptions.Item label="Tốc độ gió">{item.weatherConditions.windSpeed} m/s</Descriptions.Item>
-                                        </Descriptions>
-                                    </Card>
-                                </List.Item>
-                            )}
-                        />
-                    </div>
-                )}
-            </Modal>
-
-            {/* Prediction Modal */}
-            <Modal
-                title="Dự đoán tưới ngày hôm nay"
-                open={predictionModalVisible}
-                onCancel={() => setPredictionModalVisible(false)}
-                footer={null}
-                width={700}
-            >
-                {predictionData && (
-                    <div>
-                        <Card title="Điều kiện hiện tại" style={{ marginBottom: 20 }}>
+                        <Card title="Thông tin hiện tại" style={{ marginBottom: 20 }}>
                             <Descriptions bordered>
-                                <Descriptions.Item label="Ngày" span={3}>{dayjs(predictionData.current_conditions.date).format('DD/MM/YYYY')}</Descriptions.Item>
-                                <Descriptions.Item label="Độ ẩm đất">{predictionData.current_conditions.soil_moisture}%</Descriptions.Item>
-                                <Descriptions.Item label="Nhiệt độ">{predictionData.current_conditions.temperature}°C</Descriptions.Item>
-                                <Descriptions.Item label="Độ ẩm không khí">{predictionData.current_conditions.humidity}%</Descriptions.Item>
-                                <Descriptions.Item label="Lượng mưa">{predictionData.current_conditions.precipitation} mm</Descriptions.Item>
-                                <Descriptions.Item label="Tốc độ gió" span={2}>{predictionData.current_conditions.wind_speed} m/s</Descriptions.Item>
+                                <Descriptions.Item label="Độ ẩm đất hiện tại" span={3}>{irrigationData.current_moisture}%</Descriptions.Item>
+                                <Descriptions.Item label="Ngày" span={3}>{dayjs().format('DD/MM/YYYY')}</Descriptions.Item>
+                                {irrigationData.prediction && (
+                                    <>
+                                        <Descriptions.Item label="Nên tưới hôm nay" span={3}>
+                                            {irrigationData.prediction.should_water ? 'Có' : 'Không'}
+                                        </Descriptions.Item>
+                                        {irrigationData.prediction.should_water && (
+                                            <>
+                                                <Descriptions.Item label="Thời lượng đề xuất" span={2}>
+                                                    {irrigationData.prediction.recommended_duration} phút
+                                                </Descriptions.Item>
+                                                <Descriptions.Item label="Thời gian bắt đầu">
+                                                    {irrigationData.prediction.recommended_start_time}
+                                                </Descriptions.Item>
+                                            </>
+                                        )}
+                                    </>
+                                )}
                             </Descriptions>
                         </Card>
 
-                        <Card title="Khuyến nghị tưới">
-                            <p><strong>{predictionData.prediction.should_water ? 'Nên tưới hôm nay' : 'Không cần tưới hôm nay'}</strong></p>
-                            {predictionData.prediction.should_water && (
-                                <>
-                                    <p><strong>Thời lượng đề xuất:</strong> {predictionData.prediction.recommended_duration} phút</p>
-                                    <p><strong>Thời gian bắt đầu đề xuất:</strong> {predictionData.prediction.recommended_start_time}</p>
-                                </>
-                            )}
-                        </Card>
+                        {irrigationData.schedule && (
+                            <Card title="Lịch tưới dự kiến" style={{ marginBottom: 20 }}>
+                                <List
+                                    dataSource={irrigationData.schedule}
+                                    renderItem={(item) => (
+                                        <List.Item>
+                                            <Card title={`Ngày ${dayjs(item.date).format('DD/MM/YYYY')}`} style={{ width: '100%' }}>
+                                                <p><strong>{item.shouldWater ? 'Nên tưới' : 'Không cần tưới'}</strong></p>
+                                                {item.shouldWater && (
+                                                    <p><strong>Thời lượng tưới:</strong> {item.duration} phút</p>
+                                                )}
+                                                <Descriptions title="Điều kiện thời tiết" bordered>
+                                                    <Descriptions.Item label="Nhiệt độ">{item.weatherConditions.temperature}°C</Descriptions.Item>
+                                                    <Descriptions.Item label="Độ ẩm">{item.weatherConditions.humidity}%</Descriptions.Item>
+                                                    <Descriptions.Item label="Lượng mưa">{item.weatherConditions.precipitation} mm</Descriptions.Item>
+                                                    <Descriptions.Item label="Tốc độ gió">{item.weatherConditions.windSpeed} m/s</Descriptions.Item>
+                                                </Descriptions>
+                                            </Card>
+                                        </List.Item>
+                                    )}
+                                />
+                            </Card>
+                        )}
                     </div>
                 )}
             </Modal>
